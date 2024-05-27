@@ -1,0 +1,105 @@
+<ng-container *ngIf="formErrors.length">
+    <div class="alert alert-danger">
+        <div class="d-flex flex-column">
+            <span *ngFor="let error of formErrors">{{error}}</span>
+        </div>
+    </div>
+</ng-container>
+
+<form [formGroup]="catalogForm" class="form d-flex flex-column flex-lg-row fv-plugins-bootstrap5 fv-plugins-framework">
+    <div class="d-flex flex-column gap-7 gap-lg-10 w-100 w-lg-300px mb-7 me-lg-10">
+        <div class="card card-flush py-4">
+            <div class="card-header">
+                <div class="card-title">
+                    <h2>Thumbnail</h2>
+                </div>
+            </div>
+            <div class="card-body text-center pt-0">
+                <div class="image-input image-input-empty image-input-outline mb-3" data-kt-image-input="true" [style]="{
+                    backgroundSize: 'contain',
+                    backgroundPosition: 'center',
+                    backgroundImage: 'url(' + thumbImage + ')'
+                }">
+                    <div class="image-input-wrapper w-150px h-150px"></div>
+                    <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                        data-kt-image-input-action="change" data-bs-toggle="tooltip" title=""
+                        data-bs-original-title="Change avatar">
+                        <i class="bi bi-pencil-fill fs-7"></i>
+                        <input #thumbInput type="file" name="avatar" accept=".png, .jpg, .jpeg, .webp" required
+                            (change)="onThumbChange($event)">
+                    </label>
+                    <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                        data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title=""
+                        data-bs-original-title="Cancel avatar">
+                        <i class="bi bi-x fs-2"></i>
+                    </span>
+                    <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                        data-kt-image-input-action="remove" data-bs-toggle="tooltip" title=""
+                        data-bs-original-title="Remove avatar">
+                        <i class="bi bi-x fs-2"></i>
+                    </span>
+                </div>
+                <div class="text-muted fs-7">Set the catalog thumbnail image. Only *.png, *.jpg and *.jpeg image files
+                    are accepted</div>
+            </div>
+        </div>
+
+        <div class="card card-flush py-4 mt-4">
+            <div class="card-header">
+                <div class="card-title">
+                    <h2>Document</h2>
+                </div>
+            </div>
+            <div class="card-body text-center pt-0">
+                <div class="d-flex flex-column">
+                    <label class="w-100" style="text-align: left">
+                        <input #docInput type="file" name="avatar" accept="application/pdf" (change)="onDocChange($event)">
+                    </label>
+
+                    <a style="text-align: left; margin-top: 1rem;" *ngIf="formModel && formModel.entity.document"
+                        [href]="formModel.entity.document.path | apiUrl"><strong>{{formModel.entity.document.nameKey}}</strong></a>
+                        <div class="fs-7 py-3 text-muted text-start"> Only *.pdf file is accepted</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
+        <div class="card card-flush py-4">
+            <div class="card-header">
+                <div class="card-title">
+                    <h2>General</h2>
+                </div>
+            </div>
+            <div class="card-body pt-0">
+                <label class="required form-label">Catalog Name</label>
+                <app-translation-entry *ngIf="formModel" [entries]="formModel.translations" [placeholder]="'catalog name'"
+                    (change)="onTranslationEntryChange()"></app-translation-entry>
+            </div>
+
+            <div class="card-body pt-0">
+                <label class="required form-label">Brand</label>
+                <select class="form-select mb-2" formControlName="brandId" placeholder="Select a brand">
+                    <option [value]="b.id" *ngFor="let b of brands">{{b.name}}</option>
+                </select>
+            </div>
+
+            <div class="card-body pt-0">
+                <label class="required form-label">Status</label>
+                <select class="form-select" aria-label="status" formControlName="status">
+                    <option [value]="1">Active</option>
+                    <option [value]="2">Passive</option>
+                </select>
+            </div>
+        </div>
+        <div class="d-flex justify-content-end">
+            <button routerLink="/apps/ecommerce/catalogs/list" class="btn btn-light me-5">Cancel</button>
+            <button type="button" (click)="onSaveClick()" [attr.data-kt-indicator]="isLoading ? 'on' : 'off'"
+                [disabled]="isLoading" class="btn btn-primary">
+                <span class="indicator-label">Save Changes</span>
+                <span class="indicator-progress">Please wait...
+                    <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+            </button>
+        </div>
+    </div>
+    <div></div>
+</form>

@@ -1,0 +1,36 @@
+<div class="card card-flush">
+    <div class="table-responsive p-8" style="min-height: 500px;" [ngClass]="{'table-loading': isLoading}">
+        <div class="table-loading-message">
+            Loading...
+        </div>
+        <div class="d-flex flex-row p-5 justify-content-end">
+            <button class="btn btn-sm btn-light btn-primary" 
+            (click)="onSyncTranslationsClick()">Sync Services Translations</button>
+        </div>
+
+        <table class="table table-row-bordered gy-5">
+            <thead>
+                <tr class="fw-bolder fs-6 text-gray-800">
+                    <th>Code</th>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let additionalService of additionalServices">
+                    <td>{{additionalService.serviceDetails[0].code}}</td>
+                    <td>{{additionalService.name}}</td>
+                    <td>{{additionalService.type | additionalServiceType}}</td>
+                    <td>{{additionalService.isActive ? 'Active' : 'Passive'}}</td>
+                    <td>
+                        <button class="btn btn-sm btn-secondary" style="margin-right: .5rem;"
+                            (click)="onEditAdditionalServiceClick(additionalService)"><i
+                                class="fas fa-edit"></i></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

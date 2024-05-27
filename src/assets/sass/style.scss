@@ -1,0 +1,130 @@
+//
+// Theme style
+//
+
+// Mode
+$mode: default;
+
+// Initialize
+@import "init";
+
+// Components
+@import "./core/components/components";
+@import "components/components";
+
+// Layout
+@import "layout/layout";
+@import "./core/layout/docs/layout";
+
+@import "./components/_variables.custom.scss";
+
+.text-bold {
+    font-weight: bold !important;
+}
+
+.toast {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 8888;
+    opacity: 1;
+    color: white !important;
+}
+
+.toast-header {
+    color: white !important;
+
+}
+
+.success {
+    background-color: #28a745 !important;
+}
+
+.danger {
+    background-color: #dc3545 !important;
+}
+
+.search-input {
+    background-color: #F5F8FA;
+    border-color: #F5F8FA;
+    color: #5E6278;
+    transition: color 0.2s ease, background-color 0.2s ease;
+    outline: none;
+    border: none;
+    border-radius: 0.475rem;
+    line-height: 1.5;
+    font-size: 13px;
+    font-weight: 500;
+    width: 250px !important;
+    height: 43px;
+    padding-right: 42px;
+    padding-left: 10px;
+}
+
+.search-button {
+    height: 43px;
+    border: none;
+    outline: none;
+    background-color: #F5F8FA;
+    margin-left: 1rem;
+    border-radius: 0.475rem;
+    color: #5E6278;
+    padding-left: 15px;
+    padding-right: 15px;
+    font-weight: 500;
+}
+
+.search-input-wrapper {
+    position: relative;
+}
+
+.search-input-wrapper i {
+    width: 43px;
+    height: 43px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-size: 13px;
+}
+
+.search-input-wrapper i:hover {
+    transform: scale(1.15);
+    transition: all .2s ease-in-out;
+}
+
+.search-input {
+    &::placeholder {
+        color: #A1A5B7;
+    }
+}
+
+.search-input:focus {
+    background-color: #eef3f7;
+    border-color: #eef3f7;
+    color: #5E6278;
+    transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.spinner-border {
+    display: inline-block;
+    border: 0.185em solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    color: #B5B5C3 !important;
+    height: 30px;
+    width: 30px;
+    vertical-align: middle !important;
+}
+
+.fw-500 {
+    font-weight: 500;
+}
+
+
+.fw-600 {
+    font-weight: 600;
+}

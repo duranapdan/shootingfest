@@ -1,0 +1,50 @@
+<div class="card card-flush">
+    <div class="table-responsive p-8" style="min-height: 500px;" [ngClass]="{'table-loading': isLoading}">
+        <div class="table-loading-message">
+            Yükleniyor...
+        </div>
+
+        <div class="d-flex felx-row align-items-center">
+            <app-search (searchTextOutput)="searchTriggered($event)"></app-search>
+
+            <div style="border-right: solid 2px #e4e4e4; margin: .5rem 1.5rem; height: 2.5rem;"></div>
+
+            <label class="d-flex felx-row align-items-center">
+                <input type="checkbox" [(ngModel)]="isEmptyChecked" style="margin-right: .5rem;">
+                <strong>Sadece boş kayıtları göster.</strong>
+            </label>
+        </div>
+
+        <table class="table table-row-bordered gy-5">
+            <thead>
+                <tr class="fw-bolder fs-6 text-gray-800">
+                    <th>Anahtar</th>
+                    <th>Çeviriler</th>
+                    <th>İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let dic of dic">
+                    <td>{{dic.entryKey}}</td>
+                    <td class="d-flex flex-column">
+                        <table>
+                            <tbody>
+                                <tr *ngFor="let item of dic.dictionary">
+                                    <td style="width: 4rem;"><strong>{{item.languageSymbol}}</strong></td>
+                                    <td>{{item.entryValue}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                    <td>
+                        <div class="d-flex flex-row">
+                            <a class="btn btn-sm btn-secondary" style="margin-right: .5rem;" routerLink="/apps/administration/translations/edit/{{dic.entryKey}}"
+                                ><i
+                                    class="fas fa-edit"></i></a>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

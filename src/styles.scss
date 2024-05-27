@@ -1,0 +1,62 @@
+/* You can add global styles to this file, and also import other style files */
+@import "assets/sass/style";
+
+// Replace above style with this SCSS file to enable dark mode styles
+//@import "./assets/sass/style.dark";
+
+@import "assets/sass/style.angular.scss";
+
+@import "../node_modules/flag-icon-css/css/flag-icons.min.css";
+
+.small-thumb-image {
+    width: 40px;
+    height: 40px;
+
+    object-fit: contain;
+    object-position: center;
+}
+
+.medium-thumb-image {
+    width: 65px;
+    height: 65px;
+
+    object-fit: contain;
+    object-position: center;
+}
+
+.flex-1 {
+    flex: 1 !important;
+}
+
+.icon-button {
+    margin-left: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    width: 30px;
+    border-radius: 4px;
+    background-color: #f1f1f1;
+    cursor: pointer;
+}
+
+#kt_sign_in_submit {
+    background-color: #eb303b;
+    color: white;
+}
+
+@media (min-width: 1400px) {
+
+    .container-xxl,
+    .container-xl,
+    .container-lg,
+    .container-md,
+    .container-sm,
+    .container {
+        max-width: unset !important;
+    }
+}
+
+.spacer {
+    margin: 1rem;
+}

@@ -1,0 +1,74 @@
+<div class="card card-flush">
+    <div class="table-responsive p-8" style="min-height: 500px;" [ngClass]="{'table-loading': isLoading}">
+        <div class="table-loading-message">
+            Loading...
+        </div>
+
+        <table class="table table-row-bordered gy-5">
+            <thead>
+                <tr class="fw-bolder fs-6 text-gray-800">
+                    <th>Membership Status</th>
+                    <th>Company Type</th>
+                    <th>Order Amount Range</th>
+                    <th>Coin Win Reward</th>
+                    <th>Coin Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let coin of coinRuleList">
+
+                    <td style="font-weight: 500;">
+                        <span *ngIf="coin.membershipStatusId == 1" style="color: #CD7F32;">Bronze</span>
+                        <span *ngIf="coin.membershipStatusId == 2" style="color: #C0C0C0;">Silver</span>
+                        <span *ngIf="coin.membershipStatusId == 3" style="color: #FFD700;">Gold</span>
+                        <span *ngIf="coin.membershipStatusId == 4" style="color: #a9a9a9;">Platinum</span>
+                    </td>
+                    <td>
+                        <span *ngIf="coin.companyTypeId == 1">Toptancı</span>
+                        <span *ngIf="coin.companyTypeId == 2">Distribütör</span>
+                        <span *ngIf="coin.companyTypeId == 3">Zincir Market</span>
+                        <span *ngIf="coin.companyTypeId == 4">Süper Market</span>
+                        <span *ngIf="coin.companyTypeId == 5">İhracat</span>
+                        <span *ngIf="coin.companyTypeId == 6">Büfe</span>
+                        <span *ngIf="coin.companyTypeId == 7">Yemek Servisi</span>
+
+                    </td>
+                    <td class="d-flex" style="align-items: center;">
+                        <div class="input-group-prepend">
+                            <div class="d-flex" style="align-items: center;">
+                                <span class="input-group-text" style="
+                        height: 100%;
+                        width: 40px;
+                        border-bottom-right-radius: 0;
+                        border-top-right-radius: 0;
+                      " id="basic-addon-box{{ 1 }}">€</span>
+                                <span class="mx-2">
+                                    {{coin.minOrderAmount}}
+                                </span>
+                            </div>
+                        </div>
+                        <span class="mx-4">-</span>
+                        <div class="input-group-prepend mx-2">
+                            <div class="d-flex" style="align-items: center;">
+                                <span class="input-group-text" style="
+                        height: 100%;
+                        width: 40px;
+                        border-bottom-right-radius: 0;
+                        border-top-right-radius: 0;
+                      " id="basic-addon-box{{ 1 }}">€</span>
+                                <span class="mx-2">
+                                    {{coin.maxOrderAmount}}
+                                </span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>{{coin.coinWinReward}}</td>
+                    <td>
+                        <span *ngIf="coin.coinType == 1">Percentage of Whole Cart</span>
+                        <span *ngIf="coin.coinType == 2">Fixed Amount to Whole Cart</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

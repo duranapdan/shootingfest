@@ -1,0 +1,30 @@
+<div class="card card-flush">
+    <div class="table-responsive p-8" style="min-height: 500px;" [ngClass]="{'table-loading': isLoading}">
+        <div class="table-loading-message">
+            Yükleniyor...
+        </div>
+
+        <table class="table table-row-bordered gy-5">
+            <thead>
+                <tr class="fw-bolder fs-6 text-gray-800">
+                    <th>İsim</th>
+                    <th>Sembol</th>
+                    <th>Bayrak</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let language of languages.items">
+                    <td>{{language.name}}</td>
+                    <td>{{language.symbol}}</td>
+                    <td ><span class="flag-icon flag-icon-{{
+                        language.flag.indexOf('-') > -1 ? language.flag.split('-')[1].toLowerCase() : language.flag.toLowerCase()
+                      }}"></span></td>                
+                    <!-- <td>
+                        <button class="btn btn-sm btn-secondary" style="margin-right: .5rem;" (click)="onEditLanguageClick(language)"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn-sm btn-danger" (click)="onDeleteLanguage(language)"><i class="fas fa-trash"></i></button>
+                    </td> -->
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

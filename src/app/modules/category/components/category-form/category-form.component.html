@@ -1,0 +1,160 @@
+<ng-container *ngIf="formErrors.length">
+    <div class="alert alert-danger">
+        <div class="d-flex flex-column">
+            <span *ngFor="let error of formErrors">{{error}}</span>
+        </div>
+    </div>
+</ng-container>
+
+<form [formGroup]="categoryForm" class="form d-flex flex-column flex-lg-row fv-plugins-bootstrap5 fv-plugins-framework">
+    <div class="d-flex flex-column gap-7 gap-lg-10 w-100 w-lg-300px mb-7 me-lg-10">
+        <div class="card card-flush py-4">
+            <div class="card-header">
+                <div class="card-title">
+                    <h2>Resim</h2>
+                </div>
+            </div>
+            <div class="card-body text-center pt-0">
+                <div class="image-input image-input-empty image-input-outline mb-3" data-kt-image-input="true" [style]="{
+                    backgroundSize: 'contain',
+                    backgroundPosition: 'center',
+                    backgroundImage: 'url(' + thumbImage + ')'
+                }">
+                    <div class="image-input-wrapper w-150px h-150px"></div>
+                    <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                        data-kt-image-input-action="change" data-bs-toggle="tooltip" title=""
+                        data-bs-original-title="Change avatar">
+                        <i class="bi bi-pencil-fill fs-7"></i>
+                        <input #thumbInput type="file" name="avatar" accept=".png, .jpg, .jpeg, .webp"
+                            (change)="onThumbChange($event)">
+                    </label>
+                    <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                        data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title=""
+                        data-bs-original-title="Cancel avatar">
+                        <i class="bi bi-x fs-2"></i>
+                    </span>
+                    <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                        data-kt-image-input-action="remove" data-bs-toggle="tooltip" title=""
+                        data-bs-original-title="Remove avatar">
+                        <i class="bi bi-x fs-2"></i>
+                    </span>
+                </div>
+                <div class="text-muted fs-7">Kategori resmini ayarlayın. Yalnızca *.png, *.jpg ve *.jpeg resim dosyaları kabul edilir.</div>
+            </div>
+        </div>
+        <div class="card card-flush py-4">
+            <div class="card-header">
+                <div class="card-title">
+                    <h2>Durum</h2>
+                </div>
+            </div>
+            <div class="card-body pt-0">
+                <select class="form-select" aria-label="isActive" formControlName="isActive">
+                    <option [value]="true">Aktif</option>
+                    <option [value]="false">Pasif</option>
+                </select>
+                <div class="text-muted fs-7">Kategori durumunu belirtin.</div>
+            </div>
+        </div>
+
+        <div class="card card-flush py-4">
+            <div class="card-header">
+                <div class="card-title">
+                    <h2>Ana Kategorisi</h2>
+                </div>
+                <div class="card-toolbar">
+                    <div class="rounded-circle w-15px h-15px" id="kt_ecommerce_add_category_status"></div>
+                </div>
+            </div>
+           
+            <div class="card-body pt-0" id="categoryTree">
+                <label for="">Seçili Kategori:</label>
+                <input type="text" [(ngModel)]="selectedCategoryName" placeholder="Seçili Kategori Burada Görünecektir" [ngModelOptions]="{standalone: true}" readonly class="form-control w-100 mb-4">
+                <mat-accordion [multi]="true">
+                    <mat-expansion-panel class="category-wrapper w-100" *ngFor="let category of categories.items; let i = index; " [expanded]="true"
+                >
+                        <mat-expansion-panel-header [ngClass]="{'selected-category': category.isOpened}">
+                            <mat-panel-title>
+                                <!-- <img class="small-thumb-image" *ngIf="category.image && category?.image?.imagePath"
+                                    [src]="category.image.imagePath | apiUrl"> -->
+                                {{i+1}}.
+                                {{category.name}}
+
+                                <div class="d-flex ml-auto">
+                                    <span
+                                        (click)="onSelectCategory(category, $event)" title="Seç" [ngClass]="{'selected-category-check': category.name == selectedCategory?.name}"   class="icon-button">
+                                        <i class="bi bi-check-lg"></i>
+                                    </span>
+                                </div>
+        
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div *ngIf="category.children && category.children.length > 0">
+                        <app-category (onSetCategory)="onSelectCategoryForComp($event)" [mode]="'dropdown'"  [categoryChilds]="category.children" [selectedCategory]="selectedCategory"></app-category>
+                        </div>
+            
+        
+        
+                    </mat-expansion-panel>
+                </mat-accordion>
+                <div class="text-muted fs-7">Alt kategori oluşturmaya çalışıyorsanız, lütfen ait olacağı bir üst
+                    kategori seçin..
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
+        <div class="card card-flush py-4">
+            <div class="card-header">
+                <div class="card-title">
+                    <h2>Genel</h2>
+                </div>
+            </div>
+            <div class="card-body pt-0">
+                <label class="required form-label">Kategori İsmi</label>
+                <app-translation-entry *ngIf="formModel" [entries]="nameTranslations"
+                    [placeholder]="'category name'" (change)="onTranslationEntryChange()"></app-translation-entry>
+            </div>
+             <div class="card-body pt-0">
+                <div class="fv-row fv-plugins-icon-container">
+                  <label class="required form-label">Başlık (Seo)</label>
+                  <app-translation-entry [entries]="seoTitleTranslations" [placeholder]="'SeoTitle'"></app-translation-entry>
+                </div>
+              </div>
+      
+              <div class="card-body pt-0">
+                <div class="fv-row fv-plugins-icon-container">
+                  <label class="required form-label">Açıklama (Seo)</label>
+                  <app-translation-entry [entries]="seoDescriptionTranslations" [placeholder]="'SeoDescription'"></app-translation-entry>
+                </div>
+              </div>
+      
+              <div class="card-body pt-0">
+                <div class="fv-row fv-plugins-icon-container">
+                  <label class="required form-label">Link (Seo)</label>
+                  <app-translation-entry [entries]="seoUrlTranslations" [placeholder]="'SeoUrl'"></app-translation-entry>
+                </div>
+              </div>
+        </div>
+        
+        <!-- <div class="card card-flush py-4">
+            <div class="card-header">
+                <div class="card-title">
+                    <input style="transform: scale(1.25); margin-right: 1rem; margin-top: -3px;" type="checkbox"
+                        name="show-on-homepage" id="show-on-homepage" formControlName="showOnHomepage"> <label
+                        for="show-on-homepage">Bu kategorinin anasayfada görünmesini istiyor musun?</label>
+                </div>
+            </div>
+        </div> -->
+        <div class="d-flex justify-content-end">
+            <button routerLink="/apps/ecommerce/categories/list" class="btn btn-light me-5">İptal</button>
+            <button type="button" (click)="onSaveClick()" [attr.data-kt-indicator]="isLoading ? 'on' : 'off'"
+                [disabled]="isLoading" class="btn btn-primary">
+                <span class="indicator-label">{{categoryForm.value.id != 0 ? "Değişiklikleri Kaydet" : "Kaydet"}}</span>
+                <span class="indicator-progress">Lütfen Bekleyin...
+                    <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+            </button>
+        </div>
+    </div>
+    <div></div>
+</form>

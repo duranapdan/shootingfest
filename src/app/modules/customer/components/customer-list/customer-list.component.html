@@ -1,0 +1,72 @@
+<div class="card card-flush">
+    <div class="table-responsive p-8" style="min-height: 500px;" [ngClass]="{'table-loading': isLoading}">
+        <div class="table-loading-message">
+            Loading...
+        </div>
+        
+        <div class="d-flex flex-row">
+            <app-search (searchTextOutput)="searchTriggered($event)"></app-search>
+
+            <div style="margin-left: auto;" *ngIf="!isLoading">
+                Total: {{customersModel.totalCount}}
+            </div>
+        </div>
+
+        <table class="table table-row-bordered gy-5">
+            <thead>
+                <tr class="fw-bolder fs-6 text-gray-800">
+                    <th>
+                        Code
+                    </th>
+                    <th (click)="onSortTableByName()">
+                        Name
+                        <i *ngIf="isSortedByName" class="fa-solid fa-arrow-up-wide-short ms-2 cursor-pointer"></i>
+                        <i *ngIf="!isSortedByName" class="fa-solid fa-arrow-down-wide-short ms-2 cursor-pointer"></i>
+                    </th>
+                    <th (click)="onSortTableByContact()">
+                        Contact
+                        <i *ngIf="isSortedByContact" class="fa-solid fa-arrow-up-wide-short ms-2 cursor-pointer"></i>
+                        <i *ngIf="!isSortedByContact" class="fa-solid fa-arrow-down-wide-short ms-2 cursor-pointer"></i>
+                    </th>
+                    <th>
+                        Export
+                    </th>
+                    <th>
+                        Type
+                    </th>
+                    <th>
+                        Actions
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let customer of customersModel.data">
+                    <td>
+                        <p>{{customer.erpCode}}</p>
+                    </td>
+                    <td>
+                        <p style="width: 300px;" class="text-truncate m-0">{{customer.name}}</p>
+                    </td>
+                    <td>{{customer.contactName}}</td>
+                    <td>{{customer.export ? 'Yes' : 'No'}}</td>
+                    <td>{{getCompanyType(customer.companyTypeId)}}</td>
+                    <td>
+                        <button class="btn btn-sm btn-secondary px-4" style="margin-right: .5rem;"
+                            (click)="onCustomerDetailsClick(customer)"><i class="fas fa-arrow-right"></i> Details</button>
+                            
+                        <!-- <button class="btn btn-sm btn-secondary px-4" style="margin-right: .5rem;"
+                        (click)="onCustomerDetailsClick(customer)"><i class="fas fa-user"></i> Sub Users</button> -->
+                        
+                        <!-- <button class="btn btn-sm btn-danger px-4" (click)="onDeleteCustomer(customer)"><i
+                                class="fas fa-trash"></i> Delete</button> -->
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <ngb-pagination [maxSize]="5" [ellipses]="true" [collectionSize]="customersModel.totalCount"
+            [pageSize]="params.count" [page]="params.page" (pageChange)="onPageChange($event)" size="sm"
+            [boundaryLinks]="true">
+        </ngb-pagination>
+    </div>
+</div>

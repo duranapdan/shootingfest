@@ -1,0 +1,103 @@
+<ng-container *ngIf="formErrors.length">
+  <div class="alert alert-danger">
+    <div class="d-flex flex-column">
+      <span *ngFor="let error of formErrors">{{ error }}</span>
+    </div>
+  </div>
+</ng-container>
+
+<form
+  [formGroup]="supportRequestForm"
+  class="form d-flex flex-column flex-lg-row fv-plugins-bootstrap5 fv-plugins-framework"
+>
+  <div class="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
+    <div class="card card-flush p-10">
+      <table class="table table-row-bordered gy-5">
+        <thead>
+          <tr class="fw-bolder fs-6 text-gray-800">
+            <th style="width: 110px">Sipariş No</th>
+            <th style="width: 5px">:</th>
+            <td>{{ model?.order?.orderNo }}</td>
+          </tr>
+          <tr class="fw-bolder fs-6 text-gray-800">
+            <th>Başlık</th>
+            <th>:</th>
+            <td>{{ model?.title }}</td>
+          </tr>
+          <tr class="fw-bolder fs-6 text-gray-800">
+            <th>Konu</th>
+            <th>:</th>
+            <td>{{ model?.subject }}</td>
+          </tr>
+          <tr class="fw-bolder fs-6 text-gray-800">
+            <th>İçerik</th>
+            <th>:</th>
+            <td>{{ model?.content }}</td>
+          </tr>
+          <tr class="fw-bolder fs-6 text-gray-800">
+            <th>Tipi</th>
+            <th>:</th>
+            <td>{{ model?.supportRequestType?.supportRequestName }}</td>
+          </tr>
+          <tr class="fw-bolder fs-6 text-gray-800">
+            <th>Oluşturma Tarihi</th>
+            <th>:</th>
+            <td>{{ model?.createdDate | date }}</td>
+          </tr>
+          <tr class="fw-bolder fs-6 text-gray-800" *ngIf="model?.supportRequestDocuments?.length != 0" >
+            <th>Resimler</th>
+            <th>:</th>
+            <td>
+              <a [href]="item.path | apiUrl" *ngFor="let item of model?.supportRequestDocuments" target="_blank"> 
+                <img
+                  title="{{ model?.title }}"
+                  alt="{{ model?.title }}"
+                  class="medium-thumb-image p-1"
+                  [src]="item.path | apiUrl"
+              /></a>
+            </td>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="card card-flush py-4">
+      <div class="card-header">
+        <div class="card-title">
+          <h2>Cevap</h2>
+        </div>
+      </div>
+      <div class="card-body pt-0">
+        <textarea
+          class="form-control"
+          formControlName="answerContent"
+        ></textarea>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-end">
+      <button
+        routerLink="/apps/administration/tickets/list"
+        class="btn btn-light me-5"
+      >
+        İptal
+      </button>
+      <button
+        type="button"
+        (click)="onSaveClick()"
+        [attr.data-kt-indicator]="isLoading ? 'on' : 'off'"
+        [disabled]="isLoading"
+        class="btn btn-primary"
+      >
+        <span class="indicator-label">Değişiklikleri Kaydet</span>
+        <span class="indicator-progress"
+          >Lütfen Bekleyin...
+          <span
+            class="spinner-border spinner-border-sm align-middle ms-2"
+          ></span
+        ></span>
+      </button>
+    </div>
+  </div>
+</form>

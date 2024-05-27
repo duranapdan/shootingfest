@@ -1,0 +1,389 @@
+<ng-container *ngIf="formErrors.length">
+    <div class="alert alert-danger">
+        <div class="d-flex flex-column">
+            <span *ngFor="let error of formErrors">{{error}}</span>
+        </div>
+    </div>
+</ng-container>
+<form class="form d-flex flex-column flex-lg-row fv-plugins-bootstrap5 fv-plugins-framework">
+    <div class="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
+
+        <!-- Common -->
+        <div class="card card-flush py-4">
+            <div class="card-header">
+                <div class="card-title">
+                    <h2>Genel</h2>
+                </div>
+            </div>
+
+            <div class="card-body pt-0">
+                <div>
+                    <label class="required form-label">Adı</label>
+                    <!-- <input name="name" type="text" class="form-control" placeholder="Name"
+                        [(ngModel)]="promotionModel?.entity.name"> -->
+
+                    <app-translation-entry [entries]="nameTranslations" [placeholder]="'Name'"></app-translation-entry>
+
+
+                    <label class="required form-label">Açıklama</label>
+                    <app-translation-entry [entries]="descTranslations"
+                        [placeholder]="'Description'"></app-translation-entry>
+                </div>
+                <div class="spacer"></div>
+                <div>
+                    <label class="required form-label">Promosyon Tipleri</label>
+                    <select [disabled]="promotionModel?.entity?.id" [(ngModel)]="promotionModel?.entity.promotionType"
+                        [(value)]="promotionModel?.entity.promotionType" name="promotionType" class="form-select"
+                        aria-label="isActive">
+                        <option [value]="1">İndirim</option>
+                        <option [value]="2">Ürün</option>
+                        <option [value]="3">Kupon</option>
+                        <option [value]="5">Yeni Üyelik</option>
+                        <option [value]="6">Alışveriş Sonrası</option>
+
+                    </select>
+                </div>
+                <div class="spacer"></div>
+                <div>
+                    <label class="form-label">Başlama Tarihi</label>
+                    <input name="startDate" type="date" class="form-control" placeholder="Başlama tarihi"
+                        [(ngModel)]="promotionModel?.entity.startDate">
+                </div>
+                <div class="spacer"></div>
+                <div>
+                    <label class="form-label">Bitiş Tarihi</label>
+                    <input name="endDate" type="date" class="form-control" placeholder="End Date"
+                        [(ngModel)]="promotionModel?.entity.endDate">
+                </div>
+                <div class="spacer"></div>
+        
+    
+                <!-- <div>
+                    <label class="form-label">Üyelik Durumu</label>
+
+                    <div class="d-flex">
+                        <select [(ngModel)]="promotionModel?.entity.membershipStatusId" class="form-select"
+                            name="memberShip" aria-label="isActive">
+                            <option *ngFor="let memberShip of membershipStatusList; let j=index"
+                                [value]="memberShip.id">
+                                {{memberShip.name}}</option>
+                        </select>
+                        <button (click)="promotionModel?.entity.membershipStatusId = null" class="btn btn-sm"
+                            style="background-color: #F5F8FA; margin-left: .75rem;">
+                            Temizle
+                        </button>
+                    </div>
+                </div> -->
+                <div class="spacer"></div>
+
+            </div>
+        </div>
+
+        <div class="card card-flush py-4 mt-4">
+            <div class="card-header ">
+                <div class="card-title">
+                    <h2>İndirim</h2>
+                </div>
+            </div>
+            <div class="card-body pt-0">
+                <div>
+                    <label class="form-label">Min. Değer</label>
+                    <input name="minValue" type="number" min="0" class="form-control" placeholder="Min. değer"
+                        [(ngModel)]="promotionModel?.entity.minValue">
+                </div>
+
+                <div class="spacer"></div>
+                <div>
+                    <label class="form-label">Kullanım Limiti</label>
+                    <input name="usageLimit" type="number" min="0" class="form-control" placeholder="Kullanım Limiti"
+                        [(ngModel)]="promotionModel?.entity.usageLimit">
+                </div>
+                <div class="spacer"></div>
+                <div>
+                    <label class="required form-label">İndirim Tipleri</label>
+                    <select  [(ngModel)]="promotionModel?.entity.discountType"
+                        [(value)]="promotionModel?.entity.discountType" name="discountType" class="form-select"
+                        aria-label="isActive">
+                        <option [value]="1">Tüm Sepetin Yüzdesi</option>
+                        <option [value]="2">Tüm Sepete Sabit Tutar</option>
+                    </select>
+                </div>
+                <div class="spacer"></div>
+                <div>
+                    <label class="required form-label">İndirim
+                        <span
+                            *ngIf="promotionModel?.entity.discountType==1 || promotionModel?.entity.discountType==3 || promotionModel?.entity.discountType==5">
+                            <span class="mx-2">(%)</span>
+                        </span>
+                        <span
+                            *ngIf="promotionModel?.entity.discountType==2 || promotionModel?.entity.discountType==4 || promotionModel?.entity.discountType==6"
+                            class="mx-2">(₺)</span>
+                    </label>
+                    <input name="discount" type="number" min="0" class="form-control" placeholder="Discount"
+                        [(ngModel)]="promotionModel?.entity.discount">
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Type1 - Discount-->
+        <div *ngIf="promotionModel?.entity && promotionModel?.entity.promotionType == 1">
+        </div>
+
+        <!-- Type3  - Coupon-->
+        <div *ngIf="promotionModel?.entity && promotionModel?.entity.promotionType == 3">
+
+            <div class="card card-flush py-4 mt-4">
+                <div class="card-header ">
+                    <div class="card-title">
+                        <h2>Kupon</h2>
+                    </div>
+                </div>
+                <div class="card-body pt-0">
+                    <div>
+                        <label class="required form-label">Kupon Kodu</label>
+                        <input name="couponCode" type="text" class="form-control" placeholder="Coupon Code"
+                            [(ngModel)]="promotionModel?.entity.couponCode">
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Type2 - Product -->
+        <div *ngIf="promotionModel?.entity && promotionModel?.entity.promotionType == 2">
+
+            <div class="card card-flush py-4 mt-4">
+                <div class="card-header ">
+                    <div class="card-title">
+                        <h2>Promosyon Gerekli Ürünler</h2>
+                    </div>
+                </div>
+                <div class="card-body pt-0">
+                    <div style="margin-bottom: 0.5rem">
+                        <table class="table table-bordered">
+                            <thead>
+                                <th class="text-left"><strong>Id</strong></th>
+                                <th class="text-left"><strong>Adı</strong></th>
+                                <th class="text-left"><strong>Sayısı</strong></th>
+                            </thead>
+
+                            <tbody>
+                                <tr
+                                    *ngFor="let requiredProduct of promotionModel?.entity.promotionRequiredProducts; let i = index;">
+
+                                    <td style="width: 80px;">
+                                        <input disabled="true" type="number" min="1" class="form-control" placeholder=""
+                                            [(ngModel)]="requiredProduct.requiredProductId"
+                                            [ngModelOptions]="{ standalone: true }">
+                                    </td>
+                        
+                                    <td>
+                                        <input *ngIf="requiredProduct" disabled="true"
+                                            type="text" class="form-control" placeholder=""
+                                            [(ngModel)]="requiredProduct?.product.code + ' - ' + requiredProduct.product.name"
+                                            [ngModelOptions]="{ standalone: true }">
+                                    </td>
+
+                                    <td style="width: 100px;">
+                                        <input type="number" min="1" class="form-control" placeholder=""
+                                            [(ngModel)]="requiredProduct.productQuantity"
+                                            [ngModelOptions]="{ standalone: true }">
+                                    </td>
+
+                                    <td class="d-flex" style="padding-top: 20px;">
+
+                                        <input type="checkbox" [(ngModel)]="requiredProduct.optional"
+                                            name="cb-{{ requiredProduct.id }}" id="cb-{{ requiredProduct.id }}"
+                                            [ngModelOptions]="{ standalone: true }" />
+
+                                        <label class="mx-2" for="cb-{{ requiredProduct.id }}">Opsiyonel?</label>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-danger"
+                                            (click)="onDeleteRequiredProduct(requiredProduct)"><i
+                                                class="fas fa-trash"></i></button>
+                                    </td>
+
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                        <div class="add-div">
+                            <label class="required form-label">Ürün Seç</label>
+
+                            <div class="d-flex">
+                                <select [(ngModel)]="selectedRequiredProductId" class="form-select"
+                                    (change)="onSelectRequiredProduct($event)" [(value)]="selectedRequiredProductId"
+                                    name="discountType" aria-label="isActive">
+                                    <option *ngFor="let product of productList.items;" [value]="product.id">
+                                        {{product.code}}
+                                        - {{product.name}}</option>
+                                </select>
+                                <button (click)="onAddReqiredProduct()" class="btn btn-sm"
+                                    style="background-color: #F5F8FA; margin-left: .75rem;">
+                                    Gerekli Ürünleri Ekle
+                                </button>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="card card-flush py-4 mt-4">
+                <div class="card-header ">
+                    <div class="card-title">
+                        <h2>Promosyonlu Ürünler</h2>
+                    </div>
+                </div>
+                <div class="card-body pt-0">
+                    <div style="margin-bottom: 0.5rem">
+                        <table class="table table-bordered">
+                            <thead>
+                                <th class="text-left"><strong>Id</strong></th>
+                                <th class="text-left"><strong>Ad</strong></th>
+                                <th class="text-left"><strong>Değer</strong></th>
+                                <th class="text-left"><strong>İndirim Tutarı</strong></th>
+                                <th class="text-left"><strong>İndirim Tipi</strong></th>
+                            </thead>
+
+                            <tbody>
+                                <tr
+                                    *ngFor="let promotedProducts of promotionModel?.entity.promotionPromotedProducts; let i = index;">
+
+                                    <td style="width: 80px;">
+                                        <input type="number" min="1" disabled="true" class="form-control" placeholder=""
+                                            [(ngModel)]="promotedProducts.promotedProductId"
+                                            [ngModelOptions]="{ standalone: true }">
+                                    </td>
+
+                                    <td>
+                                        <input *ngIf="promotedProducts && promotedProducts.product" disabled="true"
+                                            type="text" class="form-control" placeholder=""
+                                            [(ngModel)]="promotedProducts?.product.code + ' - ' + promotedProducts?.product.name"
+                                            [ngModelOptions]="{ standalone: true }">
+                                    </td>
+
+                                    <td style="width: 100px;">
+                                        <input type="number" min="1" class="form-control" placeholder=""
+                                            [(ngModel)]="promotedProducts.productQuantity"
+                                            [ngModelOptions]="{ standalone: true }">
+                                    </td>
+
+                                    <td style="width: 100px;">
+                                        <input type="number" min="0" class="form-control" placeholder=""
+                                            [(ngModel)]="promotedProducts.discountAmount"
+                                            [ngModelOptions]="{ standalone: true }">
+                                    </td>
+
+
+                                    <td>
+                                        <select [(ngModel)]="promotedProducts.discountType"
+                                            [(value)]="promotedProducts.discountType" name="{{i}}" class="form-select"
+                                            aria-label="isActive">
+                                            <option [value]="3">Ürünün Yüzdesi</option>
+                                            <option [value]="4">Ürüne Sabit Tutar</option>
+                                        </select>
+                                    </td>
+
+                                    <td class="d-flex" style="padding-top: 20px;">
+
+                                        <input type="checkbox" [(ngModel)]="promotedProducts.optional"
+                                            name="cb-{{ promotedProducts.id }}" id="cb-{{ promotedProducts.id }}"
+                                            [ngModelOptions]="{ standalone: true }" />
+
+                                        <label class="mx-2" for="cb-{{ promotedProducts.id }}">Opsiyonel?</label>
+                                    </td>
+
+                                    <td>
+                                        <button class="btn btn-sm btn-danger" style="margin-top: 12px;"
+                                            (click)="onDeletePromotedProduct(promotedProducts)"><i
+                                                class="fas fa-trash"></i></button>
+                                    </td>
+
+                                </tr>
+
+
+                            </tbody>
+
+                        </table>
+
+                        <div class="add-div">
+                            <label class="required form-label">Ürün Seç</label>
+                            <div class="d-flex">
+                                <select [(ngModel)]="selectedPromotedProductId" class="form-select"
+                                    (change)="onSelectPromotedProduct($event)" [(value)]="selectedPromotedProductId"
+                                    name="discountType" aria-label="isActive">
+                                    <option *ngFor="let product of productList.items" [value]="product.id">
+                                        {{product.code}}
+                                        - {{product.name}}</option>
+                                </select>
+                                <button (click)="onAddPromotedProduct()" class="btn btn-sm"
+                                    style="background-color: #F5F8FA; margin-left: .75rem;">
+                                    Promosyon Ürünleri Ekle
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <!-- Type7 - AfterShopping-->
+        <div *ngIf="promotionModel?.entity && promotionModel?.entity.promotionType == 7">
+            <div class="card card-flush py-4 mt-4">
+                <div class="card-header ">
+                    <div class="card-title">
+                        <h2>Kupon</h2>
+                    </div>
+                </div>
+                <div class="card-body pt-0">
+                    <div>
+                        <label class="required form-label">Kupon Kodu</label>
+                        <input name="couponCode" type="text" class="form-control" placeholder="Coupon Code"
+                            [(ngModel)]="promotionModel?.entity.couponCode">
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Type6 - NewMembership -->
+        <div *ngIf="promotionModel?.entity && promotionModel?.entity.promotionType == 6">
+
+            <div class="card card-flush py-4 mt-4">
+                <div class="card-header ">
+                    <div class="card-title">
+                        <h2>Kupon</h2>
+                    </div>
+                </div>
+                <div class="card-body pt-0">
+                    <div>
+                        <label class="required form-label">Kupon Kodu</label>
+                        <input name="couponCode" type="text" class="form-control" placeholder="Coupon Code"
+                            [(ngModel)]="promotionModel?.entity.couponCode">
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!--  -->
+        <div class="d-flex justify-content-end">
+            <button routerLink="/apps/ecommerce/promotions/list" class="btn btn-light me-5">Cancel</button>
+            <button type="button" (click)="onSaveClick()" [attr.data-kt-indicator]="isLoading ? 'on' : 'off'"
+                class="btn btn-primary">
+                <span class="indicator-label">Değişiklikleri Kaydet</span>
+                <span class="indicator-progress">Lütfen Bekleyin...
+                    <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+            </button>
+        </div>
+    </div>
+    <div></div>
+</form>

@@ -1,0 +1,30 @@
+.selected {
+    background-color: #0096401c;
+}
+
+.input-wrapper {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    width: 100%;
+    padding-left: 12px;
+}
+
+.title {
+    margin-left: 30px;
+    font-size: 24px;
+}
+
+.item {
+    cursor: pointer;
+    transform: scale(1.25);
+    margin-right: 1rem;
+    margin-top: -3px;
+}
+
+.back-btn {
+    cursor: pointer;
+}
+
+.back-btn span:hover {
+    color: black !important;
+}

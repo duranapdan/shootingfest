@@ -1,0 +1,199 @@
+<div class="card card-flush">
+  <div
+    class="table-responsive p-8"
+    style="min-height: 500px"
+    [ngClass]="{ 'table-loading': isLoading }"
+  >
+    <div class="table-loading-message">Loading...</div>
+
+    <!-- 
+            AwaitingApproval
+            AwaitingPayment
+            Approved
+            Delivered
+            Canceled
+         -->
+
+    <button
+      class="btn btn-sm btn-light"
+      style="margin-right: 0.5rem"
+      [ngClass]="{ 'btn-primary': params.orderStatus == 1 }"
+      routerLink="/apps/ecommerce/orders/list"
+      [queryParams]="{ activeStatus: '1' }"
+    >
+      Onay Bekleyen
+    </button>
+    <button
+      class="btn btn-sm btn-light"
+      style="margin-right: 0.5rem"
+      [ngClass]="{ 'btn-primary': params.orderStatus == 2 }"
+      routerLink="/apps/ecommerce/orders/list"
+      [queryParams]="{ activeStatus: '2' }"
+    >
+      Ödeme Bekleyen
+    </button>
+    <button
+      class="btn btn-sm btn-light"
+      style="margin-right: 0.5rem"
+      [ngClass]="{ 'btn-primary': params.orderStatus == 3 }"
+      routerLink="/apps/ecommerce/orders/list"
+      [queryParams]="{ activeStatus: '3' }"
+    >
+      Onaylanan
+    </button>
+    <button
+      class="btn btn-sm btn-light"
+      style="margin-right: 0.5rem"
+      [ngClass]="{ 'btn-primary': params.orderStatus == 4 }"
+      routerLink="/apps/ecommerce/orders/list"
+      [queryParams]="{ activeStatus: '4' }"
+    >
+      Teslim Edilen
+    </button>
+    <button
+      class="btn btn-sm btn-light"
+      style="margin-right: 0.5rem"
+      [ngClass]="{ 'btn-primary': params.orderStatus == 5 }"
+      routerLink="/apps/ecommerce/orders/list"
+      [queryParams]="{ activeStatus: '5' }"
+    >
+      İptal Edilen
+    </button>
+    <button
+      class="btn btn-sm btn-light"
+      style="margin-right: 0.5rem"
+      [ngClass]="{ 'btn-primary': params.orderStatus == 6 }"
+      routerLink="/apps/ecommerce/orders/list"
+      [queryParams]="{ activeStatus: '6' }"
+    >
+      İade Edilen
+    </button>
+    <button
+      class="btn btn-sm btn-light"
+      style="margin-right: 0.5rem"
+      [ngClass]="{ 'btn-primary': params.orderStatus == 7 }"
+      routerLink="/apps/ecommerce/orders/list"
+      [queryParams]="{ activeStatus: '7' }"
+    >
+      Ödenen
+    </button>
+
+    <div style="margin-top: 1rem">
+      <app-search (searchTextOutput)="searchTriggered($event)"></app-search>
+    </div>
+
+    <table class="table table-row-bordered gy-5">
+      <thead>
+        <tr class="fw-bolder fs-6 text-gray-800">
+          <th>Id</th>
+          <th>Sipariş No</th>
+
+          <th>Kullanıcı Email</th>
+          <th>Kullanıcı Adı</th>
+          <th>Not</th>
+          <th>Ürün Sayıları</th>
+          <th>Ürün Adetleri</th>
+          <th>Sipariş Tarihi</th>
+          <th>Vergi</th>
+          <th>Fiyat</th>
+          <th>İşlem</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let order of orders.items">
+          <!-- 
+                        id: number;
+                        cartId: number;
+                        orderNo: number;
+                        userId: number;
+                        userEmail: string;
+                        userFirstName: string;
+                        userLastName: string;
+                        note: string;
+                        companyId: number;
+                        containerTypeId: number;
+                        shipperId: number;
+                        couponCodeId: number;
+                        promotionId: number;
+                        coinTransactionId: number;
+                        itemsCount: number;
+                        itemsQuantity: number;
+                        shippingPrice: number;
+                        serviceFee: number;
+                        grandTotal: number;
+                        taxTotal: number;
+                        discountAmount: number;
+                        promotionPrice: number;
+                        coinTransactionPrice: number;
+                        orderStatus: OrderStatus;
+                        orderDate: Date;
+                        status: RecordStatus;
+                        erpOrderNo: string;
+                        erpSendingDate: Date;
+                        erpInvoiceNo: string;
+                        user: UserDto;
+                        company: CompanyDto;
+                        containerType: ContainerTypeDto;
+                        shipper: ShipperListDto;
+                        couponCode: CouponCodeDto;
+                        promotion: PromotionGetDto;
+                        coinTransaction: CoinTransactionDto;
+                        listOrderItems: Array<OrderItemDto>;
+                        listOrderAddresses: Array<OrderAddressDto>;
+                     -->
+
+          <td>{{ order.id }}</td>
+          <td>{{ order.orderNo }}</td>
+          <td>{{ order.userEmail }}</td>
+          <td>{{ order.userFirstName }} {{ order.userLastName }}</td>
+          <td style="max-width: 100px">{{ order.note }}</td>
+          <td>{{ order.itemsCount }}</td>
+          <td>{{ order.itemsQuantity }}</td>
+          <td>{{ order.orderDate | date }}</td>
+
+          <td>
+            <strong>{{ order.taxTotal.toFixed(2) }} ₺</strong>
+          </td>
+          <td>
+            <strong>{{ order.grandTotal.toFixed(2) }} ₺</strong>
+          </td>
+
+          <td>
+            <div class="d-flex flex-column" style="width: max-content">
+              <select
+                class="form-control"
+                (change)="setStatus($event, order.id)"
+              >
+                <option
+                  [selected]="item.id === order.orderStatus"
+                  *ngFor="let item of orderStatus"
+                  [value]="item.id"
+                >
+                  {{ item.name }}
+                </option>
+              </select>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <ngb-pagination
+      [maxSize]="5"
+      [ellipses]="true"
+      [collectionSize]="orders.count"
+      [pageSize]="20"
+      [page]="params.Page"
+      (pageChange)="onPageChange($event)"
+      size="sm"
+      [boundaryLinks]="true"
+    >
+    </ngb-pagination>
+    <ng-container *ngIf="isLoading">
+      <span clas="indicator-progress" [style.display]="'block'">
+        Please wait...{{ " " }}
+        <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+      </span>
+    </ng-container>
+  </div>
+</div>

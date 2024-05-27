@@ -1,0 +1,111 @@
+<div class="card card-flush">
+  <div class="table-responsive p-8" style="min-height: 500px" [ngClass]="{ 'table-loading': isLoading }">
+    <div class="table-loading-message">Loading...</div>
+    <div class="d-flex flex-row justify-content-between">
+      <div class="d-flex flex-row ">
+        <button class="btn btn-sm btn-light" style="margin-right: 0.5rem" [ngClass]="{ 'btn-primary': status == 0 }"
+          routerLink="/apps/administration/approval-requests" [queryParams]="{ status: '0', type: type }">
+          Waiting
+        </button>
+        <button class="btn btn-sm btn-light" style="margin-right: 0.5rem" [ngClass]="{ 'btn-primary': status == 1 }"
+          routerLink="/apps/administration/approval-requests" [queryParams]="{ status: '1', type: type }">
+          Confirmed
+        </button>
+        <button class="btn btn-sm btn-light" style="margin-right: 0.5rem" [ngClass]="{ 'btn-primary': status == 2 }"
+          routerLink="/apps/administration/approval-requests" [queryParams]="{ status: '2', type: type }">
+          Rejected
+        </button>
+      </div>
+
+      <div class="d-flex flex-row ">
+        <app-search (searchTextOutput)="searchTriggered($event)"></app-search>
+        <button class="btn btn-sm btn-success" style="margin-left: 1rem;" title="Export" (click)="onExportClick()">
+          <i class="fas fa-file-import"></i>
+          Export
+        </button>
+      </div>
+    </div>
+    <table class="table table-row-bordered gy-5">
+      <thead>
+        <tr class="fw-bolder fs-6 text-gray-800">
+          <th>Id</th>
+          <th style="width: 150px">Type</th>
+          <th>Description</th>
+          <th>User / Company-Erp Code</th>
+          <th>Old</th>
+          <th>New</th>
+          <th style="width: 130px">Actions</th>
+          <!--*ngIf="status == 0" -->
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let request of requestsModel">
+          <td>{{ request.id }}</td>
+          <td>{{ request.transactionDescription || request.entityName }}</td>
+          <td>{{ request.description }}</td>
+          <td>{{ request.changeUserAndCompanyName }}</td>
+          <td>
+            <div class="overflow-div" *ngIf="request.diffOldData">
+              <p *ngFor="let item of request.diffOldData | dataListing">
+                {{ item }}
+              </p>
+            </div>
+            <div class="overflow-div" *ngIf="!request.diffOldData && request.oldData">
+              <p *ngFor="let item of request.oldData | dataListing">
+                {{ item }}
+              </p>
+            </div>
+          </td>
+          <td>
+            <div class="overflow-div" *ngIf="request.diffNewData">
+              <p *ngFor="let item of request.diffNewData | dataListing">
+                {{ item }}
+              </p>
+            </div>
+            <div class="overflow-div" *ngIf="!request.diffNewData && request.newData">
+              <p *ngFor="let item of request.newData | dataListing">
+                {{ item }}
+              </p>
+            </div>
+          </td>
+          <td *ngIf="status == 0">
+            <div *ngIf="request.confirmStatus == 0" class="d-flex flex-column">
+              <button class="btn btn-sm btn-secondary px-4" style="margin-bottom: 0.25rem"
+                (click)="onApproveClick(request)">
+                <i class="fas fa-check"></i> Approve
+              </button>
+
+              <a class="btn btn-sm btn-danger px-4" routerLink="reject" [queryParams]="{ id: request.id }"
+                style="margin-bottom: 0.25rem"><i class="fas fa-ban"></i> Reject</a>
+
+              <a class="btn btn-sm btn-light px-4" *ngIf="(request.newData | companyId) !== 0" routerLink="/apps/ecommerce/customers/details/{{
+                  request.newData | companyId
+                }}" [queryParams]="{ arid: request.id }"><i class="fas fa-arrow-right"></i> Details</a>
+            </div>
+          </td>
+          <td *ngIf="status == 1">
+            <div *ngIf="request.confirmStatus == 1" class="d-flex flex-column">
+              <a class="btn btn-sm btn-danger px-4" routerLink="reject" [queryParams]="{ id: request.id }"
+                style="margin-bottom: 0.25rem"><i class="fas fa-ban"></i> Reject</a>
+            </div>
+          </td>
+          <td *ngIf="status == 2">
+            <div *ngIf="request.confirmStatus == 2" class="d-flex flex-column">
+              <button class="btn btn-sm btn-secondary px-4" style="margin-bottom: 0.25rem"
+                (click)="onApproveClick(request)">
+                <i class="fas fa-check"></i> Approve
+              </button>
+
+              <a class="btn btn-sm btn-danger px-4" routerLink="reject" [queryParams]="{ id: request.id }"
+                style="margin-bottom: 0.25rem; font-size: smaller"><i class="fas fa-ban"></i> Resend Email</a>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- <ngb-pagination [maxSize]="5" [ellipses]="true" [collectionSize]="products.totalCount" [pageSize]="params.count"
+            [page]="params.page" (pageChange)="onPageChange($event)" size="sm" [boundaryLinks]="true">
+        </ngb-pagination> -->
+  </div>
+</div>

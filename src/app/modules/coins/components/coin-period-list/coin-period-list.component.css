@@ -1,0 +1,12 @@
+input[type="file"] {
+    display: none;
+}
+
+.file-import-lb {
+    width: 52px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}

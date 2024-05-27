@@ -1,0 +1,142 @@
+<ng-container *ngIf="formErrors.length">
+    <div class="alert alert-danger">
+        <div class="d-flex flex-column">
+            <span *ngFor="let error of formErrors">{{error}}</span>
+        </div>
+    </div>
+</ng-container>
+
+<form [formGroup]="productFlagForm"
+    class="form d-flex flex-column flex-lg-row fv-plugins-bootstrap5 fv-plugins-framework">
+    <div class="d-flex flex-column gap-7 gap-lg-10 w-100 w-lg-300px mb-7 me-lg-10">
+        <div class="card card-flush py-4">
+            <div class="card-header">
+                <div class="card-title">
+                    <h2>Thumbnail</h2>
+                </div>
+            </div>
+
+            <div class="card-body text-center pt-0">
+                <div class="image-input image-input-empty image-input-outline mb-3" data-kt-image-input="true" [style]="{
+                    backgroundSize: 'contain',
+                    backgroundPosition: 'center',
+                    backgroundImage: 'url(' + thumbImageDe + ')'
+                }">
+                    <div class="image-input-wrapper w-150px h-150px"></div>
+                    <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                        data-kt-image-input-action="change" data-bs-toggle="tooltip" title=""
+                        data-bs-original-title="Change avatar">
+                        <i class="bi bi-pencil-fill fs-7"></i>
+                        <input #thumbInputDe type="file" name="avatar" accept=".png, .jpg, .jpeg, .webp"
+                            (change)="onThumbChangeDe($event)">
+                    </label>
+                    <span style="margin-right: 1rem" class="flag-icon flag-icon-de"></span>
+                    <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                        data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title=""
+                        data-bs-original-title="Cancel avatar">
+                        <i class="bi bi-x fs-2"></i>
+                    </span>
+                    <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                        data-kt-image-input-action="remove" data-bs-toggle="tooltip" title=""
+                        data-bs-original-title="Remove avatar">
+                        <i class="bi bi-x fs-2"></i>
+                    </span>
+                </div>
+                <div class="text-muted fs-7">Set the <strong>Product Flag Image (De)</strong> thumbnail image. Only
+                    *.png, *.jpg and *.jpeg image files
+                    are accepted</div>
+            </div>
+
+            <div class="card-body text-center pt-0">
+                <div class="image-input image-input-empty image-input-outline mb-3" data-kt-image-input="true" [style]="{
+                    backgroundSize: 'contain',
+                    backgroundPosition: 'center',
+                    backgroundImage: 'url(' + thumbImageEn + ')'
+                }">
+                    <div class="image-input-wrapper w-150px h-150px"></div>
+                    <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                        data-kt-image-input-action="change" data-bs-toggle="tooltip" title=""
+                        data-bs-original-title="Change avatar">
+                        <i class="bi bi-pencil-fill fs-7"></i>
+                        <input #thumbInputEn type="file" name="avatar" accept=".png, .jpg, .jpeg, .webp"
+                            (change)="onThumbChangeEn($event)">
+                    </label>
+                    <span style="margin-right: 1rem" class="flag-icon flag-icon-us"></span>
+                    <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                        data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title=""
+                        data-bs-original-title="Cancel avatar">
+                        <i class="bi bi-x fs-2"></i>
+                    </span>
+                    <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                        data-kt-image-input-action="remove" data-bs-toggle="tooltip" title=""
+                        data-bs-original-title="Remove avatar">
+                        <i class="bi bi-x fs-2"></i>
+                    </span>
+                </div>
+                <div class="text-muted fs-7">Set the <strong>Product Flag Image (En)</strong> thumbnail image. Only
+                    *.png, *.jpg and *.jpeg image files
+                    are accepted</div>
+            </div>
+
+            <div class="card-body text-center pt-0">
+                <div class="image-input image-input-empty image-input-outline mb-3" data-kt-image-input="true" [style]="{
+                    backgroundSize: 'contain',
+                    backgroundPosition: 'center',
+                    backgroundImage: 'url(' + thumbImageTr + ')'
+                }">
+
+                    <div class="image-input-wrapper w-150px h-150px"></div>
+                    <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                        data-kt-image-input-action="change" data-bs-toggle="tooltip" title=""
+                        data-bs-original-title="Change avatar">
+                        <i class="bi bi-pencil-fill fs-7"></i>
+                        <input #thumbInput type="file" name="avatar" accept=".png, .jpg, .jpeg, .webp"
+                            (change)="onThumbChange($event)">
+                    </label>
+                    <span style="margin-right: 1rem" class="flag-icon flag-icon-tr"></span>
+                    <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                        data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title=""
+                        data-bs-original-title="Cancel avatar">
+                        <i class="bi bi-x fs-2"></i>
+                    </span>
+                    <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                        data-kt-image-input-action="remove" data-bs-toggle="tooltip" title=""
+                        data-bs-original-title="Remove avatar">
+                        <i class="bi bi-x fs-2"></i>
+                    </span>
+                </div>
+                <div class="text-muted fs-7">Set the <strong>Product Flag Image (Tr)</strong> thumbnail image. Only
+                    *.png, *.jpg and *.jpeg image files
+                    are accepted</div>
+            </div>
+
+        </div>
+    </div>
+    <div class="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
+        <div class="card card-flush py-4">
+            <div class="card-header">
+                <div class="card-title">
+                    <h2>General</h2>
+                </div>
+            </div>
+            <div class="card-body pt-0">
+                <div class="mb-10 fv-row fv-plugins-icon-container">
+                    <label class="required form-label">Product Flag Name</label>
+                    <app-translation-entry *ngIf="formModel" [entries]="formModel.translations"
+                        [placeholder]="'product flag name'"></app-translation-entry>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-end">
+            <a routerLink="/apps/ecommerce/product-flags/list" id="kt_ecommerce_add_product_cancel"
+                class="btn btn-light me-5">Cancel</a>
+            <button type="button" (click)="onSaveClick()" [attr.data-kt-indicator]="isLoading ? 'on' : 'off'"
+                [disabled]="isLoading" class="btn btn-primary">
+                <span class="indicator-label">Save Changes</span>
+                <span class="indicator-progress">Please wait...
+                    <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+            </button>
+        </div>
+    </div>
+    <div></div>
+</form>

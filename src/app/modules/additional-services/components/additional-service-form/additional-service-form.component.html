@@ -1,0 +1,98 @@
+<ng-container *ngIf="formErrors.length">
+    <div class="alert alert-danger">
+        <div class="d-flex flex-column">
+            <span *ngFor="let error of formErrors">{{error}}</span>
+        </div>
+    </div>
+</ng-container>
+
+<form *ngIf="formModel && formModel.entity" [formGroup]="additionalServiceForm"
+    class="form d-flex flex-column flex-lg-row fv-plugins-bootstrap5 fv-plugins-framework">
+    <div class="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
+        <div class="card card-flush py-4">
+            <div class="card-header">
+                <div class="card-title">
+                    <h2>General</h2>
+                </div>
+            </div>
+            <div class="card-body pt-0">
+                <label class="required form-label">Service Name</label>
+                <app-translation-entry *ngIf="formModel" [entries]="formModel.translations"
+                    [placeholder]="'service name name'"></app-translation-entry>
+            </div>
+        </div>
+
+        <div class="card card-flush py-4">
+            <div class="card-header">
+                <div class="card-title">
+                    <h2>Status</h2>
+                </div>
+            </div>
+            <div class="card-body pt-0">
+                <select class="form-select" aria-label="isActive" formControlName="isActive">
+                    <option [value]="true">Active</option>
+                    <option [value]="false">Passive</option>
+                </select>
+                <div class="text-muted fs-7">Set the service status.</div>
+            </div>
+            <div class="card-header">
+                <div class="card-title">
+                    <h2>Type</h2>
+                </div>
+            </div>
+            <div class="card-body pt-0">
+                <select class="form-select" aria-label="type" formControlName="type">
+                    <option [value]="1">Shipper</option>
+                    <option [value]="2">Additional Service</option>
+                    <option [value]="3">Pallet</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="card card-flush py-4">
+            <div class="card-header">
+                <div class="card-title">
+                    <h2>Prices</h2> <button class="btn btn-sm" (click)="addNewPrice()"><i
+                            class="fas fa-plus"></i></button>
+                </div>
+            </div>
+            <div class="card-body pt-0">
+                <div class="mb-5 d-flex flex-row" *ngFor="let p of formModel.entity.companyTypePrices">
+                    <select placeholder="Select a Company Type" class="form-control" style="margin-right: 1rem;"
+                        [(ngModel)]="p.companyTypeId" [ngModelOptions]="{standalone: true}">
+                        <option *ngFor="let ct of customerTypes" [value]="ct.id">{{ct.name}}</option>
+                    </select>
+
+
+                    <div class="input-group" style="margin-right: 1rem;width: 20rem;">
+                        <input [(ngModel)]="p.price" [ngModelOptions]="{standalone: true}" type="number"
+                            class="form-control" placeholder="price" aria-label="price" aria-describedby="basic-addon2">
+                        <div class="input-group-append">
+                            <span class="input-group-text" id="basic-addon2">€</span>
+                        </div>
+                    </div>
+
+                    <div class="input-group" style="align-content: center;width: 20rem;">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" [(ngModel)]="p.isRequired"
+                                name="cb-{{ p.companyTypeId}}" id="cb-{{ p.companyTypeId }}" [ngModelOptions]="{ standalone: true }">
+                            <label class="form-check-label" for="cb-{{ p.companyTypeId}}">Is Required</label>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-sm btn-danger" (click)="removePrice(p.id)">Delete</button>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-end">
+            <button routerLink="/apps/ecommerce/additional-services/list" class="btn btn-light me-5">Cancel</button>
+            <button type="button" (click)="onSaveClick()" [attr.data-kt-indicator]="isLoading ? 'on' : 'off'"
+                [disabled]="isLoading" class="btn btn-primary">
+                <span class="indicator-label">Save Changes</span>
+                <span class="indicator-progress">Please wait...
+                    <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+            </button>
+        </div>
+    </div>
+    <div></div>
+</form>

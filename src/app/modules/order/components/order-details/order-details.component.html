@@ -1,0 +1,557 @@
+<div
+  *ngIf="
+    !isTicketFormActive && orderDetail && orderDetail.shoppingCartDetailItems
+  "
+>
+  <div class="order-details-wrapper">
+    <div class="row mb-4">
+      <ng-container *ngIf="orderDetail.isAvailableCancel">
+        <div class="col-auto">
+          <button
+            type="button"
+            class="btn btn-danger"
+            (click)="
+              cancellationFormStatus = true; refundMessageFormStatus = false
+            "
+          >
+            Cancel
+          </button>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="orderDetail.isAvailableRefund">
+        <div class="col-auto">
+          <button
+            type="button"
+            class="btn btn-warning"
+            (click)="
+              refundMessageFormStatus = true; cancellationFormStatus = false
+            "
+          >
+            Refund
+          </button>
+        </div>
+      </ng-container>
+    </div>
+
+    <div class="refund-message" *ngIf="refundMessageFormStatus">
+      <form [formGroup]="refundMessageForm">
+        <div class="mb-4">
+          <label>Refund Message:</label>
+          <textarea
+            formControlName="refundMessageText"
+            class="form-control"
+          ></textarea>
+        </div>
+        <div class="row">
+          <div class="col-auto">
+            <button
+              type="submit"
+              class="btn btn-primary mr-2"
+              (click)="refundOrder()"
+            >
+              Submit
+            </button>
+          </div>
+          <div class="col-auto">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              (click)="refundMessageFormStatus = false"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="cancel-message" *ngIf="cancellationFormStatus">
+      <form [formGroup]="cancelMessageForm">
+        <div class="form group mb-4">
+          <label>Cancellation Type:</label>
+          <select
+            formControlName="cancellationMessageType"
+            class="form-control"
+          >
+            <option
+              *ngFor="let items of orderCancellationTypeList?.data"
+              [value]="items.id"
+            >
+              {{ items.name }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form group mb-4">
+          <label>Cancellation Message:</label>
+          <textarea
+            formControlName="cancellationMessageText"
+            class="form-control"
+          ></textarea>
+        </div>
+        <div class="row">
+          <div class="col-auto">
+            <button
+              type="submit"
+              class="btn btn-primary d-inline-block mr-2"
+              (click)="cancelOrder()"
+            >
+              Submit
+            </button>
+          </div>
+          <div class="col-auto">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              (click)="cancellationFormStatus = false"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="py-2" *ngIf="orderDetail.orderStatus==5">
+      <p class="product-name">Cancel Reason : {{orderDetail.orderSummary.orderCancellationType?.name}}</p>
+      <p class="product-name">Cancel Message : {{orderDetail.orderSummary.orderCancellationMessage}}</p>
+    </div>
+
+    <div class="py-2" *ngIf="orderDetail.orderStatus==8">
+      <p class="product-name">Refund Message : {{orderDetail.orderSummary.orderRefundMessage?.toString()}}</p>
+    </div>
+      
+    <div class="top-bar">
+      <div class="status-date-wrapper">
+        <span
+          *ngIf="orderDetail.orderStatus == 1"
+          class="status waiting-for-approval"
+          >Awaiting for Approval</span
+        >
+        <span
+          *ngIf="orderDetail.orderStatus == 2"
+          class="status waiting-for-payment"
+          >Awaiting for Payment</span
+        >
+        <span *ngIf="orderDetail.orderStatus == 3" class="status approved"
+          >Approved</span
+        >
+        <span *ngIf="orderDetail.orderStatus == 4" class="status delivered"
+          >Delivered</span
+        >
+        <span *ngIf="orderDetail.orderStatus == 5" class="status canceled"
+          >Cancelled</span
+        >
+        <span *ngIf="orderDetail.orderStatus == 6" class="status created"
+          >Order Created</span
+        >
+        <span *ngIf="orderDetail.orderStatus == 7" class="status approved"
+          >Paid</span
+        >
+        <span *ngIf="orderDetail.orderStatus == 8" class="status created"
+          >Refunded</span
+        >
+
+        <span class="date">
+          <img src="assets/media/date-gray.png" />
+          {{ orderDetail.orderDate | localeDate }}
+        </span>
+      </div>
+
+      <div class="flex-1">
+        <div class="order-number-wrapper">
+          <span class="status order-number-title">Order Number</span>
+          <span class="order-number">{{ orderDetail.orderSummary.orderNo }}</span>
+        </div>
+      </div>
+
+      <div
+        class="top-bar-tab cursor-pointer p-2"
+        *ngIf="orderDetail.orderSummary.orderProformaPath"
+        style="margin-right: 22px"
+      >
+      <a [href]="orderDetail.orderSummary.orderProformaPath | apiUrl" target="_blank">
+        Proforma Invoice
+      </a>  
+      </div>
+
+      <div
+        class="top-bar-tab cursor-pointer p-2"
+        *ngIf="orderDetail.orderSummary.orderInvoicePath"
+        style="margin-right: 22px"
+      >
+      <a [href]="orderDetail.orderSummary.orderInvoicePath | apiUrl" target="_blank">
+        Sales Invoice
+      </a>  
+      </div>
+
+      <!-- <div class="flex-1 "></div>
+
+            <div *ngIf="order.statusNumber==3 " class="top-bar-tab cursor-pointer" style="margin-right: 22px ">
+                <img src="../../../../assets/img/core/profile/view-invoice.png "> Takip No: 5256898523
+            </div>
+
+
+            <div class="top-bar-tab cursor-pointer " (click)="onViewInvoiceClick()" style="margin-right: 22px ">
+                <img src="../../../../assets/img/core/profile/view-invoice.png "> {{'ViewInvoice' | translate}}
+            </div>
+            <div class="top-bar-tab cursor-pointer " (click)="onActiveTicketForm()">
+                <img src="../../../../assets/img/core/profile/ticket.png "> {{'SupportRequest' | translate}}
+            </div> -->
+    </div>
+
+    <div class="progress-wrapper">
+      <div class="d-flex align-items-center justify-content-center flex-column">
+        <div class="d-flex align-items-center">
+          <div
+            class="progress-circle"
+            [ngClass]="{
+              'active-circle':
+                orderDetail.orderStatus == 1 ||
+                orderDetail.orderStatus == 2 ||
+                orderDetail.orderStatus == 6
+            }"
+          >
+            <span>Awaiting for Approval</span>
+          </div>
+          <div class="progress-line"></div>
+          <div
+            class="progress-circle"
+            [ngClass]="{ 'active-circle': orderDetail.orderStatus == 3 }"
+          >
+            <span>Preparing</span>
+          </div>
+          <div class="progress-line"></div>
+          <div class="progress-circle">
+            <span>Shipped</span>
+          </div>
+          <div class="progress-line"></div>
+          <div
+            class="progress-circle"
+            [ngClass]="{ 'active-circle': orderDetail.orderStatus == 4 }"
+          >
+            <span>Delivered</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div
+        *ngFor="let product of orderDetail.shoppingCartDetailItems"
+        class="col-12 col-md-6"
+        style="margin-bottom: 62px"
+      >
+        <div class="d-flex align-items-center" *ngIf="product.quantity > 0">
+          <div style="margin-right: 32px">
+            <img [src]="product.productImage | apiUrl" style="width: 87px" />
+          </div>
+
+          <div style="margin-top: 18px">
+            <span class="product-name">{{ product.productName }}</span>
+            <span class="brand-and-type">
+              {{ "Brand" | translate }}: {{ product.brandName }}
+              {{ "Product Range" | translate }}: {{ product.productType }}
+            </span>
+            <div class="d-flex" style="margin-top: 18px">
+              <span class="price">
+                {{ product.total | currency: "EUR":"symbol-narrow" }}
+              </span>
+              <span class="pallet">
+                {{ product.quantity }} {{ product.orderUnit?.orderUnitName }}
+              </span>
+              <span class="number">
+                {{ "Total" | translate }}
+                {{
+                  product.quantity * (product.orderUnit?.orderUnitPieces || 0)
+                }}
+                pieces
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container-details-wrapper" *ngIf="containerVolume">
+    <div class="d-flex align-items-center">
+      <div
+        *ngIf="containerType"
+        class="d-flex align-items-center"
+        style="width: 212px"
+      >
+        <img src="../../../../assets/img/core/profile/container.png " />
+        <div class="container-type">
+          <span class="title">Preferred Shipping Type: </span>
+          <span class="detail">{{ containerType.name }}</span>
+        </div>
+      </div>
+      <div class="inner w-100" [ngClass]="{ 'has-container': containerType }">
+        <div class="row w-100">
+          <div class="col-md-6">
+            <div class="container-proggress-bar green">
+              <span class="count-text"
+                >{{ containerVolume.containerWeightCapacity }} kg</span
+              >
+              <div
+                class="progress-bar-element"
+                style="transition: width 1s ease; min-width: 105px"
+                [style.width]="weightPercentage + '%'"
+              >
+                <span>{{ "Weight" | translate }}</span>
+                <span
+                  class="count"
+                  style="height: 52px !important; width: 52px !important"
+                  >{{ containerVolume.cartItemsWeight }}</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="container-proggress-bar orange">
+              <span class="count-text">{{
+                containerVolume.containerVolumeCapacity
+              }}</span>
+              <div
+                class="progress-bar-element"
+                style="transition: width 1s ease; min-width: 105px"
+                [style.width]="volumePercentage + '%'"
+              >
+                <span>{{ "Volume" | translate }}</span>
+                <span
+                  class="count"
+                  style="height: 52px !important; width: 52px !important"
+                  >{{ containerVolume.cartItemsVolume }}</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-details-wrapper h-100">
+    <label class="form-label">
+      <i class="fas fa-sticky-note h4 text-success me-2 ms-n1"></i>
+      <span class="align-text-bottom h5 fw-bolder">{{
+        "OrderNote" | translate
+      }}</span>
+    </label>
+    <p *ngIf="orderDetail.orderSummary.note">
+      {{ orderDetail.orderSummary.note }}
+    </p>
+  </div>
+
+  <div class="row mt-3">
+    <div class="col-12 col-md-6">
+      <div class="address-info-wrapper">
+        <div
+          class="h-100 w-100 light-scroll-bar"
+          style="overflow: auto; padding: 20px 80px 20px 20px"
+        >
+          <span class="lead-1">{{ "Address Info" | translate }}</span>
+          <span class="lead-2" style="margin-top: 25px">{{
+            "Invoice Address" | translate
+          }}</span>
+          <span class="lead-3" style="margin-top: 12px; margin-bottom: 12px">
+            {{ orderDetail.billAddress.addressTitle }}</span
+          >
+          <span class="lead-3" style="margin-top: 9px">
+            {{ orderDetail.billAddress.addressContactFullName }}
+            {{ orderDetail.billAddress.companyName }}
+            {{ orderDetail.billAddress.phoneNumberCountryCode }}
+            {{ orderDetail.billAddress.phone }} |
+            {{ orderDetail.billAddress.email }}
+          </span>
+          <span class="lead-3" style="margin-top: 12px; margin-bottom: 14px">
+            {{ orderDetail.billAddress.addressText }}
+          </span>
+
+          <div class="horizantal-separator"></div>
+
+          <span class="lead-2" style="margin-top: 14px">{{
+            "Delivery Address" | translate
+          }}</span>
+          <span class="lead-3" style="margin-top: 12px; margin-bottom: 12px">
+            {{ orderDetail.deliveryAddress.addressTitle }}</span
+          >
+          <span class="lead-3">
+            {{ orderDetail.deliveryAddress.addressContactFullName }}
+            {{ orderDetail.deliveryAddress.companyName }}
+            {{ orderDetail.deliveryAddress.phoneNumberCountryCode }}
+            {{ orderDetail.deliveryAddress.phone }} |
+            {{ orderDetail.deliveryAddress.email }}
+          </span>
+          <span class="lead-3" style="margin-top: 12px; margin-bottom: 21px">
+            {{ orderDetail.deliveryAddress.addressText }}
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-6">
+      <div class="address-info-wrapper">
+        <div
+          class="h-100 w-100 light-scroll-bar position-relative"
+          style="overflow: auto; padding: 20px 80px 20px 20px"
+        >
+          <span class="lead-1">{{ "Payment Info" | translate }}</span>
+          <!-- 
+                    <img style="margin-top: 36px; margin-bottom: 14px "
+                        src="../../../../assets/img/core/profile/vakifbank.png "> -->
+
+          <span
+            *ngIf="orderDetail.orderPayment.paymentName == 'Klarna'"
+            class="mt-3 mb-3 d-block"
+          >
+            <img
+              style="height: 33px !important"
+              src="assets/media/klarna.png"
+            />
+          </span>
+
+          <span
+            *ngIf="orderDetail.orderPayment.paymentName == 'PayPal'"
+            class="mt-3 mb-3 d-block"
+          >
+            <img
+              style="height: 26px !important"
+              src="assets/media/paypal.png"
+            />
+          </span>
+
+          <span
+            *ngIf="!orderDetail.orderPayment.paymentName"
+            class="mt-3 mb-3 d-block text-12px lead-1"
+          >
+            <div
+              *ngIf="orderDetail.orderStatus == 1"
+              class="status-div waiting-for-approval"
+            >
+              Awaiting for Approval
+            </div>
+            <div
+              *ngIf="orderDetail.orderStatus == 2"
+              class="status-div waiting-for-payment"
+            >
+              Awaiting for Payment
+            </div>
+            <div
+              *ngIf="orderDetail.orderStatus == 3"
+              class="status-div approved"
+            >
+              Approved
+            </div>
+            <div
+              *ngIf="orderDetail.orderStatus == 4"
+              class="status-div delivered"
+            >
+              Delivered
+            </div>
+            <div
+              *ngIf="orderDetail.orderStatus == 5"
+              class="status-div canceled"
+            >
+              Cancelled
+            </div>
+            <div
+              *ngIf="orderDetail.orderStatus == 6"
+              class="status-div created"
+            >
+              Order Created
+            </div>
+          </span>
+
+          <span
+            class="lead-2 d-flex flex-row w-100"
+            style="line-height: 1.8 !important; color: #9d9d9c"
+            >Price
+            <span style="margin-left: auto; color: #575756">{{
+              orderDetail.orderSummary.price | currency: "EUR":"symbol-narrow"
+            }}</span>
+          </span>
+          <span
+            *ngIf="orderDetail.orderSummary.taxTotal"
+            class="lead-2 d-flex flex-row w-100"
+            style="line-height: 1.8 !important; color: #9d9d9c"
+            >Tax
+            <span style="margin-left: auto; color: #575756">{{
+              orderDetail.orderSummary.taxTotal
+                | currency: "EUR":"symbol-narrow"
+            }}</span>
+          </span>
+          <span
+            *ngIf="orderDetail.orderSummary.promotionPrice"
+            class="lead-2 d-flex flex-row w-100"
+            style="line-height: 1.8 !important; color: #9d9d9c"
+            >Kupon
+            <span style="margin-left: auto; color: #575756"
+              >-{{
+                orderDetail.orderSummary.promotionPrice
+                  | currency: "EUR":"symbol-narrow"
+              }}</span
+            >
+          </span>
+          <span
+            *ngIf="orderDetail.orderSummary.coinTransactionPrice"
+            class="lead-2 d-flex flex-row w-100"
+            style="line-height: 1.8 !important; color: #9d9d9c"
+            >Coin
+            <span style="margin-left: auto; color: #575756"
+              >-{{
+                orderDetail.orderSummary.coinTransactionPrice
+                  | currency: "EUR":"symbol-narrow"
+              }}</span
+            >
+          </span>
+          <span
+            *ngIf="orderDetail.orderSummary.shippingPrice"
+            class="lead-2 d-flex flex-row w-100"
+            style="line-height: 1.8 !important; color: #9d9d9c"
+            >Shipping
+            <span style="margin-left: auto; color: #575756">{{
+              orderDetail.orderSummary.shippingPrice
+                | currency: "EUR":"symbol-narrow"
+            }}</span>
+          </span>
+          <span
+            *ngIf="orderDetail.orderSummary.serviceFee"
+            class="lead-2 d-flex flex-row w-100"
+            style="line-height: 1.8 !important; color: #9d9d9c"
+            >Additional Services
+            <span style="margin-left: auto; color: #575756">{{
+              orderDetail.orderSummary.serviceFee
+                | currency: "EUR":"symbol-narrow"
+            }}</span>
+          </span>
+
+          <div class="grand-total">
+            <span class="lead-1 d-flex" style="color: #9d9d9c">
+              {{ "Grand Total" | translate }}
+              <span class="lead-1" style="color: #009640; margin-left: auto">{{
+                orderDetail.orderSummary.grandTotal
+                  | currency: "EUR":"symbol-narrow"
+              }}</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- <span (click)="onOpenSalesAgreementForm() " class="subtext ">{{'SalesAgreement' | translate}}</span> -->
+</div>
+<div class="d-flex justify-content-end">
+  <button
+    [routerLink]="'/apps/ecommerce/orders/list'"
+    class="btn btn-light me-5"
+  >
+    Cancel
+  </button>
+</div>
+
+<div *ngIf="isTicketFormActive">
+  <!-- <app-profile-ticket-form [orderId]="order.id" (back)="onBackClickFromForm() "></app-profile-ticket-form> -->
+</div>

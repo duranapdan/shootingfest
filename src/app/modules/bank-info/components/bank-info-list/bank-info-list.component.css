@@ -1,0 +1,62 @@
+.account-card {
+    background-color: white;
+    width: 100%;
+    min-height: 300px;
+    border-radius: 16px;
+    padding: 2rem;
+    position: relative;
+    transition: box-shadow 1s;
+    box-shadow: 1px 8px 7px #85858542;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.account-card:hover {
+    box-shadow: 1px 8px 20px grey;
+}
+
+.title {
+    font-size: 20px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.fullname {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 0;
+}
+
+.desc {
+    font-size: 13px;
+    margin-bottom: 4px !important;
+}
+
+.bank-logo {
+    width: 80px;
+    height: 80px;
+    right: 0;
+    position: relative;
+    object-fit: contain;
+}
+
+.edit-icon {
+    padding: 6px 5px 6px 11px !important;
+    position: absolute;
+    left: 1rem;
+    bottom: 1rem;
+}
+
+.delete-icon {
+    padding: 6px 5px 6px 11px !important;
+    position: absolute;
+    right: 1rem;
+    bottom: 1rem;
+}
+
+.add-icon {
+    transform: scale(4.5);
+    cursor: pointer;
+}

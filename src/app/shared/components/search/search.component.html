@@ -1,0 +1,17 @@
+<div class="d-flex flex-row">
+  <div class="search-input-wrapper">
+    <input
+      class="search-input"
+      (keyup.enter)="onSubmitSearchTextClick()"
+      [(ngModel)]="searchText"
+      placeholder="Search"
+    />
+    <i
+      title="Search"
+      (click)="onSubmitSearchTextClick()"
+      class="fas fa-search"
+    ></i>
+  </div>
+
+  <button (click)="onResetSearchClick()" class="search-button">Sıfırla</button>
+</div>

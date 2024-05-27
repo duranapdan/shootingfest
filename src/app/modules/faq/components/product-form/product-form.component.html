@@ -1,0 +1,64 @@
+<ng-container *ngIf="formErrors.length">
+  <div class="alert alert-danger">
+    <div class="d-flex flex-column">
+      <span *ngFor="let error of formErrors">{{ error }}</span>
+    </div>
+  </div>
+</ng-container>
+<div class="d-flex justify-content-end"></div>
+<form class="form d-flex flex-column flex-lg-row" [formGroup]="productForm">
+  <div class="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
+    <div class="d-flex flex-column gap-7 gap-lg-10">
+      <div class="card card-flush py-4">
+        <div class="card-header">
+          <label class="required form-label">Question</label>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="questionText"
+          />
+        </div>
+      </div>
+      <div class="card card-flush py-4">
+        <div class="card-header">
+          <label class="required form-label">Answer</label>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="answerText"
+          />
+        </div>
+      </div>
+      <div class="card card-flush py-4">
+        <div class="card-header">
+          <label class="required form-label">Order</label>
+          <input type="text" class="form-control" formControlName="faqOrder" />
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-end">
+      <div class="flex-1"></div>
+
+      <button
+        routerLink="/faq/list"
+        class="btn btn-light me-5"
+        [disabled]="isLoading"
+      >
+        Cancel
+      </button>
+      <button
+        type="button"
+        (click)="onSaveClick()"
+        [disabled]="isLoading"
+        class="btn btn-primary"
+      >
+        Save Changes
+      </button>
+    </div>
+  </div>
+
+  <div class="loading" *ngIf="isLoading">loading.. please wait..</div>
+</form>
+
+<app-toasts></app-toasts>

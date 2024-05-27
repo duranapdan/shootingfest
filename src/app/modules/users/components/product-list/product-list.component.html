@@ -1,0 +1,112 @@
+<div class="card card-flush">
+  <div
+    class="table-responsive p-8"
+    style="min-height: 500px"
+    [ngClass]="{ 'table-loading': isLoading }"
+  >
+    <div class="table-loading-message">Loading...</div>
+    <!-- <div class="d-flex flex-row p-5 justify-content-end">
+            <button class="btn btn-primary btn-sm btn-light mx-1" 
+            (click)="onSyncNewProductsClick()">Sync New Products</button>
+
+            <button class="btn btn-success btn-sm btn-light mx-1" 
+            (click)="onSyncPricesClick()">Sync Prices</button>
+
+            <button class="btn btn-info btn-sm btn-light mx-1" 
+            (click)="onSyncTranslationsClick()">Sync Translations</button>
+
+            <button class="btn btn-secondary btn-sm btn-light mx-1" 
+            (click)="onSyncStockClick()">Sync Stocks</button>
+        </div> -->
+    <!-- <div class="d-flex flex-row p-5">
+  <app-search (searchTextOutput)="searchTriggered($event)"></app-search> -->
+
+    <!--       <div style="border-right: solid 2px #e4e4e4; margin: 0.5rem 1.5rem"></div>
+
+      <div class="filter-select-wrapper">
+        <label for="status-select" class="filter-select">Durum</label>
+        <select
+          class="search-input"
+          id="status-select"
+          style="width: 100px !important; padding-right: 10px !important"
+          [(ngModel)]="params.isActive"
+          (change)="onStatusChanged($event)"
+        >
+          <option [value]="true">Active</option>
+          <option [value]="false">Passive</option>
+        </select>
+      </div>
+
+      <div style="border-right: solid 2px #e4e4e4; margin: 0.5rem 1.5rem"></div>
+ -->
+    <!-- <div style="border-right: solid 2px #e4e4e4; margin: .5rem 1.5rem"></div> -->
+
+    <!--  <div class="d-flex flex-row align-items-center">
+     <strong>Total: {{isLoading ? '...' : productsModel.count}}</strong> 
+      </div>
+    </div>-->
+
+    <table class="table table-row-bordered gy-5">
+      <thead>
+        <tr class="fw-bolder fs-6 text-gray-800">
+          <th>Username</th>
+          <th>Point</th>
+          <th>Ranking</th>
+          <th>Gift</th>
+          <th>Challenge</th>
+          <th>Country</th>
+          <th>Age</th>
+          <th>Gender</th>
+          <!-- <th>Status</th> -->
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of productsModel.items">
+          <td>{{ product.fullName }}</td>
+          <td>{{ product.point }}</td>
+          <td>{{ product.ranking }}</td>
+          <td>{{ product.gift }}</td>
+          <td>{{ product.challenge }}</td>
+          <td>{{ product.country }}</td>
+          <td>{{ product.age }}</td>
+          <td>{{ product.gender }}</td>
+          <!--  <td>{{ product.status ? "Active" : "Passive" }}</td> -->
+          <td>
+            <a
+              class="btn btn-sm btn-secondary px-4"
+              style="margin-right: 0.5rem"
+              routerLink="/users/edit/{{ product.id }}"
+              (click)="setPageHistory()"
+              ><i class="fas fa-edit"></i> Edit</a
+            >
+
+            <!-- <a class="btn btn-sm btn-secondary px-4" style="margin-bottom: .5rem"
+                            routerLink="/users/companytypes/{{product.id}}"><i
+                                class="fas fa-edit"></i>
+                            Company Types</a> -->
+            <button
+              class="btn btn-sm btn-danger px-4"
+              (click)="onDeleteProduct(product)"
+            >
+              <i class="fas fa-trash"></i> Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <ngb-pagination
+      [maxSize]="5"
+      [ellipses]="true"
+      *ngIf="!waitForSycn"
+      [collectionSize]="productsModel.count"
+      [pageSize]="params.Count"
+      [page]="params.Page + 1"
+      (pageChange)="onPageChange($event)"
+      size="sm"
+      [boundaryLinks]="true"
+    >
+    </ngb-pagination>
+  </div>
+</div>
+<app-toasts></app-toasts>

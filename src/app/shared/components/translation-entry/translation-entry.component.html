@@ -1,0 +1,94 @@
+<div *ngIf="mode == 'text'">
+  <div class="input-group mb-4" *ngFor="let entry of entries">
+    <div class="input-group-prepend">
+      <span
+        class="input-group-text"
+        style="
+          height: 100%;
+          border-bottom-right-radius: 0;
+          border-top-right-radius: 0;
+        "
+        id="basic-addon{{ entry.id }}"
+        ><span
+          class="flag-icon flag-icon-{{
+            entry.language.flag.indexOf('-') > -1 ? entry.language.flag.split('-')[1].toLowerCase() : entry.language.flag.toLowerCase()
+          }}"
+        ></span
+      ></span>
+    </div>
+    <input
+      type="text"
+      class="form-control"
+      placeholder="{{ placeholder }}"
+      [(ngModel)]="entry.entryValue"
+      [attr.aria-describedby]="'basic-addon' + entry.id"
+      (keyup)="change.emit()"
+    />
+  </div>
+</div>
+
+<div *ngIf="mode == 'wysiwyg'">
+  <ul ngbNav #nav="ngbNav" class="nav-tabs" [activeId]="0">
+    <li [ngbNavItem]="i" *ngFor="let entry of entries; let i = index">
+      <a ngbNavLink>
+        <span
+          style="margin-right: 1rem"
+          class="flag-icon flag-icon-{{
+            entry.language.flag.indexOf('-') > -1 ? entry.language.flag.split('-')[1].toLowerCase() : entry.language.flag.toLowerCase()
+          }}"
+        ></span>
+        <span
+          ><strong>{{ entry.language.name }}</strong></span
+        ></a
+      >
+      <ng-template ngbNavContent>
+        <!-- <div [froalaEditor]="{height: '360px'}" [(froalaModel)]="entry.entryValue"></div> -->
+        
+        
+        <!-- apiKey="usqw31ckbykju2zh2ulpvu0qbohpnphwvup8zgsns53ig44m" -->
+
+        <editor
+          apiKey="jrpu6fg47tf6515wgfn5uzv195p2a8h9rdx9w99s2ug6rsd7"
+          [init]="{
+            icons: 'material',
+            min_height: 360,
+            height: 600,
+            selector: 'textarea#open-source-plugins',
+            plugins:
+              'print preview paste importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons',
+            imagetools_cors_hosts: ['picsum.photos'],
+            menubar: false,
+            toolbar:
+              'undo redo | bold italic underline strikethrough | fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media template link anchor codesample | ltr rtl',
+            toolbar_sticky: true,
+            forced_root_block_attrs: {
+              'style': 'font-family: Arial;'
+            },
+            invalid_styles: 'font-family',
+            autosave_ask_before_unload: true,
+            autosave_interval: '30s',
+            autosave_prefix: '{path}{query}-{id}-',
+            autosave_restore_when_empty: false,
+            autosave_retention: '2m',
+            image_advtab: true,
+            template_cdate_format:
+              '[Date Created (CDATE): %m/%d/%Y : %H:%M:%S]',
+            template_mdate_format:
+              '[Date Modified (MDATE): %m/%d/%Y : %H:%M:%S]',
+            image_caption: true,
+            quickbars_selection_toolbar:
+              'bold italic | quicklink h2 h3 blockquote quickimage quicktable',
+            noneditable_noneditable_class: 'mceNonEditable',
+            toolbar_mode: 'sliding',
+            contextmenu: 'link image imagetools table',
+            content_style:
+              'body { font-family:Arial !important; font-size:14px }'
+          }"
+          [(ngModel)]="entry.entryValue"
+        ></editor>
+      </ng-template>
+    </li>
+  </ul>
+
+  <div [ngbNavOutlet]="nav" class="mt-2"></div>
+</div>

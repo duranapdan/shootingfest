@@ -1,0 +1,73 @@
+<ng-container *ngIf="formErrors.length">
+    <div class="alert alert-danger">
+        <div class="d-flex flex-column">
+            <span *ngFor="let error of formErrors">{{error}}</span>
+        </div>
+    </div>
+</ng-container>
+
+<form [formGroup]="bannerForm" class="form d-flex flex-column">
+    <div class="d-flex flex-column align-items-center">
+        <div class="image-input image-input-empty image-input-outline mb-3" style="width: 640px; height: 320px"
+            data-kt-image-input="true" [style]="{
+            backgroundSize: 'contain',
+            backgroundPosition: 'center',
+            backgroundImage: 'url(' + image + ') '
+        }">
+            <div class="image-input-wrapper w-100 h-100"></div>
+            <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                data-kt-image-input-action="change" data-bs-toggle="tooltip" title=""
+                data-bs-original-title="Change avatar">
+                <i class="bi bi-pencil-fill fs-7"></i>
+                <input #imageInput type="file" name="avatar" accept=".png, .jpg, .jpeg, .webp" (change)="onImgChange($event)">
+            </label>
+            <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title=""
+                data-bs-original-title="Cancel avatar">
+                <i class="bi bi-x fs-2"></i>
+            </span>
+            <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                data-kt-image-input-action="remove" data-bs-toggle="tooltip" title=""
+                data-bs-original-title="Remove avatar">
+                <i class="bi bi-x fs-2"></i>
+            </span>
+        </div>
+        <div class="text-muted fs-7">Banner resminizi 1400px x 500px şeklinde ayarlayın.</div>
+        <div class="text-muted fs-7">Banner resmi ayarlayın.. sadece *.png, *.jpg and *.jpeg formatları kabul edilir.</div>
+    </div>
+
+    <div class="spacer"></div>
+
+    <div class="d-flex flex-column">
+        <div class="card card-flush py-4">
+            <div class="card-body pt-0">
+                <div>
+                    <label class="required form-label">Yönlendirme Url'i</label>
+                    <input type="text" class="form-control" placeholder="Redirect Url" formControlName="redirectUrl">
+                </div>
+                <div class="spacer"></div>
+                <div>
+                    <label class="form-label">Geçerlilik Tarihi</label>
+                    <input type="date" class="form-control" placeholder="Expire Date" formControlName="expireDate">
+                </div>
+                <div class="spacer"></div>
+                <div>
+                    <label class="required form-label">Dil</label>
+                    <select class="form-control" formControlName="languageId">
+                        <option [value]="lang.id" *ngFor="let lang of languages.items">{{lang.name}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="spacer"></div>
+        <div class="d-flex justify-content-end">
+            <button routerLink="/apps/ecommerce/banners/list" class="btn btn-light me-5">İptal</button>
+            <button type="button" (click)="onSaveClick()" [attr.data-kt-indicator]="isLoading ? 'on' : 'off'"
+                [disabled]="isLoading" class="btn btn-primary">
+                <span class="indicator-label">Değişiklikleri Kaydet</span>
+                <span class="indicator-progress">Lütfen Bekleyin...
+                    <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+            </button>
+        </div>
+    </div>
+</form>

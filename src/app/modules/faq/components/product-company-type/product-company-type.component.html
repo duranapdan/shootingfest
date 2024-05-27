@@ -1,0 +1,35 @@
+<div>
+  <div class="card card-flush py-4">
+    <p class="title">
+      <a class="back-btn" (click)="onBackClick()">
+        <span
+          [inlineSVG]="'./assets/media/icons/duotune/arrows/arr063.svg'"
+          class="svg-icon svg-icon-1 rotate-180"
+        ></span>
+      </a>
+      Assigned Company Types for
+      <span style="font-weight: 600">{{ product?.name }}</span>
+    </p>
+    <div class="card-header">
+      <div
+        class="card-title input-wrapper cursor-pointer"
+        [ngClass]="{
+          selected: companyType.isSelected || companyType.isSelected == true
+        }"
+        *ngFor="let companyType of companyTypeList; let i = index"
+      >
+        <input
+          (click)="onDeleteCompanyTypeClick(companyType)"
+          [(ngModel)]="companyType.isSelected"
+          class="item"
+          type="checkbox"
+          name="show-on-homepage"
+          id="{{ i }}"
+        />
+        <label class="cursor-pointer" for="{{ i }}"
+          >{{ companyType.code }} - {{ companyType.name }}</label
+        >
+      </div>
+    </div>
+  </div>
+</div>

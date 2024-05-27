@@ -1,0 +1,106 @@
+.form {
+    position: relative;
+}
+
+.loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    font-size: large;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.videoStyle {
+    max-width: 640px;
+    max-height: 480px;
+    width: 100%;
+    height: 100%;
+}
+
+.category-select {
+    font-size: 16px !important;
+    font-weight: bold;
+}
+
+::ng-deep .selected-sub-category {
+    background-color: #fff !important;
+    color: unset;
+}
+
+.mat-expansion-panel-header-title {
+    color: unset !important;
+    width: 100%;
+    justify-content: space-between !important;
+}
+
+
+#productCategoryTree {
+    ::ng-deep.mat-expansion-panel-header {
+
+        height: 40px !important;
+        padding: 0 4px !important;
+    }
+
+    ::ng-deep.mat-expansion-panel-header:hover {
+        background-color: #fff;
+
+    }
+
+    ::ng-deep.mat-expansion-panel-body {
+        padding: 0rem !important;
+
+    }
+
+    &.category-wrapper {
+        .icon-button {
+            i {
+                color: #fff;
+            }
+
+            background-color: #28a745 !important;
+            cursor:pointer;
+        }
+
+        box-shadow: none !important;
+    }
+
+    .selected-category-check {
+        i {
+            color: #fff;
+        }
+
+        background-color: #28a745 !important;
+    }
+
+    .selected-sub-category-dropdown {
+        background-color: #fff !important;
+        color: #181C32 !important;
+    }
+
+    ::ng-deep.mat-expansion-panel-spacing {
+        margin: 0;
+    }
+
+    ::ng-deep.mat-expansion-panel-content {
+
+        padding: 0 8px;
+    }
+
+    ::ng-deep.mat-expansion-panel-header-title {
+        margin-right: 8px;
+
+    }
+
+    ::ng-deep.mat-expansion-panel-header-description {
+
+        margin-right: 0px;
+
+    }
+
+}

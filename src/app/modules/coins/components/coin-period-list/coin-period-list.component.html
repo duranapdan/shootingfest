@@ -1,0 +1,50 @@
+<div class="card card-flush">
+    <div class="table-responsive p-8" style="min-height: 500px;" [ngClass]="{'table-loading': isLoading}">
+        <div class="table-loading-message">
+            Loading...
+        </div>
+
+        <table class="table table-row-bordered gy-5">
+            <thead>
+                <tr class="fw-bolder fs-6 text-gray-800">
+                    <th>Period Start Date</th>
+                    <th>Period Endt Date</th>
+                    <th>Statement</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let period of coinPeriodList">
+                    <td>{{period.startDate | date :"dd.MM.YYYY"}}</td>
+                    <td>{{period.endDate | date :"dd.MM.YYYY"}}</td>
+                    <td>{{period.statement}}</td>
+                    <td>
+                        <button class="btn btn-sm btn-secondary" style="margin-right: .5rem;"
+                            (click)="onEditPeriodClick(period)"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn-sm btn-danger" style="margin-right: .5rem;"
+                            (click)="onDeletePeriodClick(period)"><i class="fas fa-trash"></i></button>
+                        <button title="Export" class="btn btn-sm btn-primary" style="margin-right: .5rem;"
+                            (click)="onExportPeriodClick(period)"><i class="fas fa-file-import"></i></button>
+                        <button title="Import" class="btn btn-sm btn-info" style="padding: 0 !important;">
+                            <label for="file-import" class="file-import-lb">
+                                <i class="fas fa-file-export"></i>
+                            </label>
+
+                            <input id="file-import" placeholder="Import" #imageInput type="file" name="avatar"
+                                accept=".png, .jpg, .jpeg, .webp" (change)="onImportPeriodClick($event)">
+                        </button>
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<ngb-toast *ngIf="hasError" class="danger" [autohide]="true" [delay]="4000">
+    An error was occurred ..
+</ngb-toast>
+
+<ngb-toast *ngIf="hasSuccess" class="success" [autohide]="true" [delay]="4000">
+    Operation completed succesfully..
+</ngb-toast>

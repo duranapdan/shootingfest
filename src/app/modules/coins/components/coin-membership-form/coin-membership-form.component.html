@@ -1,0 +1,154 @@
+<ng-container *ngIf="formErrors.length">
+    <div class="alert alert-danger">
+        <div class="d-flex flex-column">
+            <span *ngFor="let error of formErrors">{{error}}</span>
+        </div>
+    </div>
+</ng-container>
+
+<form class="form d-flex flex-column flex-lg-row fv-plugins-bootstrap5 fv-plugins-framework">
+    <div class="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
+
+        <div class="card card-flush py-4">
+            <div class="card-header">
+                <div class="card-title">
+                    <h2>Title</h2>
+                </div>
+            </div>
+            <div class="card-body pt-0">
+                <app-translation-entry [entries]="coinMembershipModel?.translations"
+                    [placeholder]="'Description'"></app-translation-entry>
+            </div>
+        </div>
+
+        <div class="card card-flush py-4">
+            <div class="card-header">
+                <div class="card-title">
+                    <h2>General</h2>
+                </div>
+            </div>
+            <div class="card-body pt-0">
+                <div>
+                    <label class="required form-label">Row Number</label>
+                    <input name="rowNumber" type="number" class="form-control" placeholder="Statement"
+                        [(ngModel)]="coinMembershipModel?.entity.rowNumber">
+                </div>
+                <div class="spacer"></div>
+                <!-- <div>
+                    <label class="required form-label">Start Date</label>
+                    <input name="isDefault" type="checkbox" class="form-control" placeholder="Start Date"
+                        [checked]="coinMembershipModel?.entity.isDefault"
+                        [(ngModel)]="coinMembershipModel?.entity.isDefault">
+                </div> -->
+            </div>
+        </div>
+
+        <div class="card card-flush py-4" *ngIf="coinMembershipModel?.entity && coinMembershipModel?.entity?.coinRules">
+            <div class="card-header">
+                <div class="card-title">
+                    <h2>Coin Rules</h2>
+                </div>
+            </div>
+            <div class="card-body pt-0">
+                <div style="margin-bottom: 0.5rem">
+                    <table class="table table-bordered">
+                        <thead>
+                            <th class="text-left"><strong>Company Type</strong></th>
+                            <th class="text-left"><strong>Min. Order Amount</strong></th>
+                            <th class="text-left"><strong>Max. Order Amount</strong></th>
+                            <th class="text-left"><strong>Coin Win Reward</strong></th>
+                            <th class="text-left"><strong>Coin Type</strong></th>
+                        </thead>
+
+                        <tbody>
+                            <tr *ngFor="let coinrule of coinMembershipModel?.entity?.coinRules; let i = index;">
+                                <td style="padding-left: 1rem;">
+
+                                    <select (change)="onSelectCoinType($event,i)" [(ngModel)]="coinrule.companyTypeId"
+                                        [(value)]="coinrule.companyTypeId" name="{{i}} companyType" class="form-select"
+                                        aria-label="isActive">
+                                        <option *ngFor="let companyType of companyTypeList" [value]="companyType.id">
+                                            {{companyType.name}}</option>
+                                    </select>
+                                </td>
+                                <td style="max-width: 100px;">
+                                    <div class="input-group mb-4">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" style="
+                                                  height: 100%;
+                                                  border-bottom-right-radius: 0;
+                                                  border-top-right-radius: 0;
+                                                " id="basic-addon-box{{ coinrule.id }}">€</span>
+                                        </div>
+                                        <input type="number" class="form-control" placeholder=""
+                                            [(ngModel)]="coinrule.minOrderAmount"
+                                            [ngModelOptions]="{ standalone: true }">
+                                    </div>
+
+                                </td>
+
+                                <td style="max-width: 100px;">
+                                    <div class="input-group mb-4">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" style="
+                                                  height: 100%;
+                                                  border-bottom-right-radius: 0;
+                                                  border-top-right-radius: 0;
+                                                " id="basic-addon-box{{ coinrule.id }}">€</span>
+                                        </div>
+                                        <input type="number" class="form-control" placeholder=""
+                                            [(ngModel)]="coinrule.maxOrderAmount"
+                                            [ngModelOptions]="{ standalone: true }">
+                                    </div>
+                                </td>
+                                <td style="max-width: 100px;">
+                                    <input type="number" class="form-control" placeholder=""
+                                        [(ngModel)]="coinrule.coinWinReward" [ngModelOptions]="{ standalone: true }">
+                                </td>
+
+                                <td>
+                                    <select [(value)]="coinrule.coinType" name="{{i}}" class="form-select"
+                                        aria-label="isActive" [(ngModel)]="coinrule.coinType">
+                                        <option [value]="1">Percentage of Whole Cart</option>
+                                        <option [value]="2">Fixed Amount to Whole Cart</option>
+                                    </select>
+                                </td>
+
+                            </tr>
+                        </tbody>
+
+                    </table>
+                    <div class="d-flex">
+                        <button class="btn btn-sm" (click)="addCoinRuleClick()"
+                            style="background-color: #F5F8FA; margin-left: auto;">
+                            <i class="fas fa-plus"></i>
+                            Add Coin Rule
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-end">
+
+            <div class="flex-1"></div>
+
+            <button routerLink="/apps/ecommerce/coins/memberships" class="btn btn-light me-5" [disabled]="isLoading">
+                Cancel
+            </button>
+            <button type="button" (click)="onSaveClick()" [disabled]="isLoading" class="btn btn-primary">
+                Save Changes
+            </button>
+        </div>
+
+    </div>
+</form>
+
+
+<ngb-toast *ngIf="hasDuplicate" class="danger" [autohide]="true" [delay]="4000">
+    Duplicate Company Types ..
+</ngb-toast>
+<!-- 
+<ngb-toast *ngIf="hasSuccess" class="success" [autohide]="true" [delay]="4000">
+    Operation completed succesfully..
+</ngb-toast> -->
