@@ -1,7 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { PagedList } from 'src/app/models/api-paged-data-result.model';
-import { CategoryDto } from 'src/app/modules/category/models/category.dto';
-import { CategoryService } from 'src/app/modules/category/services/category.service';
 import { ConfirmationService } from 'src/app/shared/services/confirmation.service';
 import { SubSink } from 'subsink';
 import { ManagementProductListParams } from '../../models/management-product-list.model';
@@ -15,7 +13,6 @@ import { GiftDto } from '../../models/gift.dto';
     selector: 'app-product-list',
     templateUrl: './product-list.component.html',
     styleUrls: ['./product-list.component.scss'],
-    providers: [CategoryService]
 })
 export class ProductListComponent implements OnInit, OnDestroy {
     public get isLoading(): boolean {
@@ -56,7 +53,6 @@ export class ProductListComponent implements OnInit, OnDestroy {
     companyTypeList: any = [];
 
     constructor(
-        private _categoryService: CategoryService,
         private _router: Router,
         private _productService: ProductService,
         private _confirmationService: ConfirmationService,

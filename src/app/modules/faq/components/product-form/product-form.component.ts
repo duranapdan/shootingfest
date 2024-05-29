@@ -1,27 +1,15 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormControl, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BrandDto } from 'src/app/modules/brand/models/brand.dto';
-import { BrandService } from 'src/app/modules/brand/services/brand.sevice';
-import { CategoryDto } from 'src/app/modules/category/models/category.dto';
-import { CategoryService } from 'src/app/modules/category/services/category.service';
-import { CompanyTypeDto } from 'src/app/modules/customer/models/company-type.dto';
-import { CustomerService } from 'src/app/modules/customer/services/customer.service';
-import { ProductFlagDto } from 'src/app/modules/product-flag/models/product-flag.dto';
-import { ProductFlagService } from 'src/app/modules/product-flag/services/product-flag.service';
 import { ApiUrlPipe } from 'src/app/pipes/api-url.pipe';
-import { MultilanguageEntityDto } from 'src/app/shared/models/multilanguage-entity.dto';
 import { TranslationEntryDto } from 'src/app/shared/models/translation-entry.dto';
 import { FileService } from 'src/app/shared/services/file.service';
 import { ToastService } from 'src/app/shared/services/toast.service';
 import { SubSink } from 'subsink';
-import { ProductDto, ProductPriceDto, ProductUnitDto, ProductCategoryDto } from '../../models/product.dto';
 import { ProductService } from '../../services/product.service';
 import { PagedList } from 'src/app/models/api-paged-data-result.model';
 import { ProductTypeDto } from '../../models/product-type.dto';
 import { GenderDto } from '../../models/gender.dto';
-import { ProductForListDto } from '../../models/product-for-list.dto';
-import { DynamicFilter } from '../../models/dynamic-filter.model';
 import { ManagementProductListParams } from '../../models/management-product-list.model';
 import { ProductDetailDto } from '../../models/product-detail.dto';
 
@@ -31,10 +19,6 @@ import { ProductDetailDto } from '../../models/product-detail.dto';
     styleUrls: ['./product-form.component.scss'],
     providers: [
         ApiUrlPipe,
-        BrandService,
-        CategoryService,
-        ProductFlagService,
-        CustomerService
     ]
 })
 export class ProductFormComponent implements OnInit {
@@ -43,7 +27,7 @@ export class ProductFormComponent implements OnInit {
     selectedCategory: any = null
     private _isLoading: boolean = false;
     public get isLoading(): boolean {
-        return this._productService.isLoading || this._brandService.isLoading || this._categoryService.isLoading || this._isLoading;
+        return this._productService.isLoading || this._isLoading;
     }
 
     private _categoryImage: string | undefined = undefined;
@@ -121,16 +105,6 @@ export class ProductFormComponent implements OnInit {
         return this._formModel;
     }
 
-    private _brands: PagedList<BrandDto> = { page: 0, count: 0 };
-    public get brands(): PagedList<BrandDto> {
-        return this._brands;
-    }
-
-    /*     private _categories: PagedList<CategoryDto> = { count: 0 };
-        public get categories(): PagedList<CategoryDto> {
-            return this._categories;
-        }
-     */
     private _genders: Array<GenderDto> = [
         { id: 1, name: "Male" },
         { id: 2, name: "Female" },
@@ -139,10 +113,6 @@ export class ProductFormComponent implements OnInit {
         return this._genders;
     }
 
-    private _productFlags: Array<ProductFlagDto> = [];
-    public get productFlags(): Array<ProductFlagDto> {
-        return this._productFlags;
-    }
     private _productTypes: PagedList<ProductTypeDto> = { page: 0, count: 0 };
     public get productTypes(): PagedList<ProductTypeDto> {
         return this._productTypes;
@@ -174,30 +144,14 @@ export class ProductFormComponent implements OnInit {
 
     newVideos: Array<{ linkUrl: string, name: string }> = [];
 
-    productPrice: ProductPriceDto = {
-
-        unitPrice: 0,
-        currency: "₺",
-        discountedPrice: 0,
-        status: 1,
-
-    }
-
-
-    private _customerTypes: Array<CompanyTypeDto> = [];
-
     constructor(
         private _router: Router,
         private _route: ActivatedRoute,
         private _formBuilder: UntypedFormBuilder,
         private _productService: ProductService,
-        private _brandService: BrandService,
-        private _categoryService: CategoryService,
-        private _productFlagService: ProductFlagService,
         private _fileService: FileService,
         private _toastService: ToastService,
         private _apiUrlPipe: ApiUrlPipe,
-        private _customerServices: CustomerService
     ) { }
 
     public ngOnInit(): void {
@@ -206,25 +160,18 @@ export class ProductFormComponent implements OnInit {
             if (faqIq) {
                 const result = await Promise.all([
                     this._productService.getInstance(faqIq),
-                    /*   this._brandService.getList(), */
-                    /* this.getCategories(), */
-                    // this._productFlagService.getList(),
                 ])
                 console.log(result)
                 this._formModel = result[0];
 
             }
 
-            /*  this._categories = result[2]; */
-            /*  this._productTypes = result[3]; */
-
-            console.log(this._formModel);
             this.initForm();
         }));
     }
 
     private initForm(): void {
-        if (!this._formModel || !this._formModel) { return; }
+        if (!this._formModel) { return; }
 
         this._productForm.get('id')?.setValue(this._formModel.id);
         this._productForm.get('questionText')?.setValue(this._formModel.questionText);
@@ -251,12 +198,6 @@ export class ProductFormComponent implements OnInit {
         this._isLoading = true;
         this._thumbImg = e.target.files[0];
 
-        // if (this._thumbImg) {
-        //     this._thumbImage = await this._fileService.getLocalSource(this._thumbImg);
-        //     const fileData =  await this._fileService.postFile(this._thumbImg);
-        //     (<any>this._productForm.get('tokens')).value.push(fileData.token);
-        //     this._productForm.patchValue({"mainImageId":fileData.id})
-        // }
         if (this._thumbImg) {
             this._thumbImage = await this._fileService.getLocalSource(this._thumbImg);
 
@@ -302,19 +243,7 @@ export class ProductFormComponent implements OnInit {
         }
     }
 
-    /*     async getCategories(): Promise<PagedList<CategoryDto>> {
-            this._params.Page = 0;
-            this._params.Count = 200;
-            const filter = {
-                filter: {
-                    "field": "parentId",
-                    "operator": "isnull",
-                }
-            }
-            this._categories = await this._categoryService.getListByPage(this.params, filter);
-            return this._categories
-        }
-     */
+
     public async onSelectCategory(category: any, event: Event) {
         console.log(category, event)
         this.selectedCategory = category
@@ -342,14 +271,6 @@ export class ProductFormComponent implements OnInit {
         }]
     }
 
-    public onNameTranslationEntryChange(): void {
-        //console.log(this._formModel.translations);
-    }
-
-    public onDescTranslationEntryChange(): void {
-        //console.log(this._formModel.translations);
-    }
-
 
     public async onImageFileSelect(e: any) {
         console.log(e.target.files);
@@ -374,12 +295,7 @@ export class ProductFormComponent implements OnInit {
     }
 
     public onDeleteProductImage(id: number): void {
-        /* const pImage = this._formModel?.images.find(x => x.id == id);
-        if (pImage != null && this._formModel && this._formModel) {
-            this._formModel.images = this._formModel.images.filter(x => x.id != id);
-            this._formModel.productImages = this._formModel.productImages.filter(x => x.imageId != id)
-            this._productForm.get('productImages')?.setValue(this._formModel.productImages);
-        } */
+
     }
 
     public addNewVideo(): void {
@@ -396,45 +312,7 @@ export class ProductFormComponent implements OnInit {
         }
     }
 
-    public deleteProductVideo(linkUrl: string): void {
-        /* const pImage = this._formModel?.videos.find(x => x.linkUrl == linkUrl);
-        if (pImage != null && this._formModel && this._formModel) {
-            this._formModel.videos = this._formModel.videos.filter(x => x.linkUrl != linkUrl);
-            this._productForm.get('videos')?.setValue(this._formModel.videos);
-        } */
-    }
 
-    public companyTypeName(id: number): string {
-        const ct = this._customerTypes.find(c => c.id === id);
-        return ct && ct.name ? ct.name : '-';
-    }
-
-
-
-    onCategorySelectionChange(event: Event, category: CategoryDto): void {
-        const inputElement = event.target as HTMLInputElement;
-        if (inputElement.checked) {
-            const categoryModel =
-                this.selectedCategories.push({
-                    categoryId: category.id ? category.id : 0,
-                });
-            const idx = this.selectedCategories.findIndex((x: any) => x.categoryId == category.id)
-            this.selectedCategories[idx].displayOrder = idx + 1
-        } else {
-            const index = this.selectedCategories.findIndex(c => c.categoryId === category.id);
-            this.selectedCategories.splice(index, 1);
-        }
-    }
-
-    onGenderSelectionChange(event: Event, gender: GenderDto): void {
-        const inputElement = event.target as HTMLInputElement;
-        if (inputElement.checked) {
-            const idx = this.selectedGenders.findIndex((x: any) => x.id == gender.id)
-        } else {
-            const index = this.selectedGenders.findIndex(c => c.id === gender.id);
-            this.selectedGenders.splice(index, 1);
-        }
-    }
 
     async onChangeCategoryForRelative(e: any) {
 
@@ -488,11 +366,5 @@ export class ProductFormComponent implements OnInit {
         }
         return this.selectedProducts
     }
-    // public priceChanged(item: ProductPriceDto) {
 
-    //         item.price
-
-    //     console.log(item);
-    //     console.log(item.price.toFixed(6));
-    // }
 }

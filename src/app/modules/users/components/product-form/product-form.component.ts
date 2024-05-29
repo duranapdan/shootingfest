@@ -1,16 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BrandDto } from 'src/app/modules/brand/models/brand.dto';
-import { BrandService } from 'src/app/modules/brand/services/brand.sevice';
-import { CategoryDto } from 'src/app/modules/category/models/category.dto';
-import { CategoryService } from 'src/app/modules/category/services/category.service';
-import { CompanyTypeDto } from 'src/app/modules/customer/models/company-type.dto';
-import { CustomerService } from 'src/app/modules/customer/services/customer.service';
-import { ProductFlagDto } from 'src/app/modules/product-flag/models/product-flag.dto';
-import { ProductFlagService } from 'src/app/modules/product-flag/services/product-flag.service';
-import { ApiUrlPipe } from 'src/app/pipes/api-url.pipe';
-import { MultilanguageEntityDto } from 'src/app/shared/models/multilanguage-entity.dto';
 import { TranslationEntryDto } from 'src/app/shared/models/translation-entry.dto';
 import { FileService } from 'src/app/shared/services/file.service';
 import { ToastService } from 'src/app/shared/services/toast.service';
@@ -28,13 +18,7 @@ import { ProductDetailDto } from '../../models/product-detail.dto';
     selector: 'app-product-form',
     templateUrl: '/product-form.component.html',
     styleUrls: ['/product-form.component.scss'],
-    providers: [
-        ApiUrlPipe,
-        BrandService,
-        CategoryService,
-        ProductFlagService,
-        CustomerService
-    ]
+
 })
 export class ProductFormComponent implements OnInit {
     userId: string | null = "";
@@ -42,7 +26,7 @@ export class ProductFormComponent implements OnInit {
     selectedCategory: any = null
     private _isLoading: boolean = false;
     public get isLoading(): boolean {
-        return this._productService.isLoading || this._brandService.isLoading || this._categoryService.isLoading || this._isLoading;
+        return this._productService.isLoading || this._isLoading;
     }
 
     private _categoryImage: string | undefined = undefined;
@@ -124,15 +108,6 @@ export class ProductFormComponent implements OnInit {
         return this._formModel;
     }
 
-    private _brands: PagedList<BrandDto> = { page: 0, count: 0 };
-    public get brands(): PagedList<BrandDto> {
-        return this._brands;
-    }
-
-    /*     private _categories: PagedList<CategoryDto> = { count: 0 };
-        public get categories(): PagedList<CategoryDto> {
-            return this._categories;
-        } */
 
     private _genders: Array<GenderDto> = [
         { id: 1, name: "Male" },
@@ -142,10 +117,7 @@ export class ProductFormComponent implements OnInit {
         return this._genders;
     }
 
-    private _productFlags: Array<ProductFlagDto> = [];
-    public get productFlags(): Array<ProductFlagDto> {
-        return this._productFlags;
-    }
+
     private _productTypes: PagedList<ProductTypeDto> = { page: 0, count: 0 };
     public get productTypes(): PagedList<ProductTypeDto> {
         return this._productTypes;
@@ -186,20 +158,14 @@ export class ProductFormComponent implements OnInit {
     }
 
 
-    private _customerTypes: Array<CompanyTypeDto> = [];
 
     constructor(
         private _router: Router,
         private _route: ActivatedRoute,
         private _formBuilder: UntypedFormBuilder,
         private _productService: ProductService,
-        private _brandService: BrandService,
-        private _categoryService: CategoryService,
-        private _productFlagService: ProductFlagService,
         private _fileService: FileService,
         private _toastService: ToastService,
-        private _apiUrlPipe: ApiUrlPipe,
-        private _customerServices: CustomerService,
         private _toolbarService: ToolbarService
     ) { }
 
@@ -211,17 +177,8 @@ export class ProductFormComponent implements OnInit {
             if (this.userId !== "") {
                 const result = await Promise.all([
                     this._productService.getInstance(this.userId),
-                    /*  this._brandService.getList(), */
-                    /* this.getCategories(), */
-                    /*   this._productService.getProductTypeList(), */
-                    // this._productFlagService.getList(),
                 ])
                 this._formModel = result[0];
-                /*     this._brands = result[1];
-               this._categories = result[2]; */
-                // this._productTypes = result[3];
-
-                console.log(this._formModel);
                 this.initForm();
             }
 
@@ -265,12 +222,6 @@ export class ProductFormComponent implements OnInit {
         this._isLoading = true;
         this._thumbImg = e.target.files[0];
 
-        // if (this._thumbImg) {
-        //     this._thumbImage = await this._fileService.getLocalSource(this._thumbImg);
-        //     const fileData =  await this._fileService.postFile(this._thumbImg);
-        //     (<any>this._productForm.get('tokens')).value.push(fileData.token);
-        //     this._productForm.patchValue({"mainImageId":fileData.id})
-        // }
         if (this._thumbImg) {
             this._thumbImage = await this._fileService.getLocalSource(this._thumbImg);
 
@@ -301,7 +252,6 @@ export class ProductFormComponent implements OnInit {
                 this._toastService.show('Başarılı bir şekilde kaydedildi.', {
                     classname: 'bg-success text-light'
                 });
-                this.updateProductPricesClick();
                 this._router.navigateByUrl('/users/list');
             });
 
@@ -314,19 +264,7 @@ export class ProductFormComponent implements OnInit {
         }
     }
 
-    /*  async getCategories(): Promise<PagedList<CategoryDto>> {
-         this._params.Page = 0;
-         this._params.Count = 200;
-         const filter = {
-             filter: {
-                 "field": "parentId",
-                 "operator": "isnull",
-             }
-         }
-         this._categories = await this._categoryService.getListByPage(this.params, filter);
-         return this._categories
-     }
-  */
+
     public async onSelectCategory(category: any, event: Event) {
         console.log(category, event)
         this.selectedCategory = category
@@ -354,59 +292,12 @@ export class ProductFormComponent implements OnInit {
         }]
     }
 
-    public onNameTranslationEntryChange(): void {
-        //console.log(this._formModel.translations);
-    }
-
-    public onDescTranslationEntryChange(): void {
-        //console.log(this._formModel.translations);
-    }
 
     async getRelativeProducts() {
 
         this._products = await this._productService.getList(null)
     }
 
-    public async onImageFileSelect(e: any) {
-        console.log(e.target.files);
-        console.log(e.target.files.length);
-
-        for (let i = 0; i < e.target.files.length; i++) {
-            const file = e.target.files[i];
-            let fileName = file.name;
-            try {
-
-                this._isLoading = true;
-                // if a file exists with same name replace them.
-                const idx = this._selectedImages.findIndex(f => f.name === file.name);
-                if (idx > -1) {
-                    const idx2 = this._productForm.get('productImages')?.value.indexOf(this._selectedImages[idx].token);
-                    if (idx2 > -1) {
-                        this._productForm.get('productImages')?.value.splice(idx2, 1);
-                    }
-
-                    this._selectedImages.splice(idx, 1);
-                }
-
-                await this._fileService.postFile(file).then((fileData) => {
-                    this._productForm.get('productImages')?.value.push({ token: fileData.token, displayOrder: idx });
-                    let productImageObject = { token: fileData.token, name: fileName, path: fileData.path };
-                    this._selectedImages.push(productImageObject);
-                    console.log(productImageObject);
-                });
-            } catch (error) {
-                this._toastService.show('Dosya karşı tarafa yüklenemedi. Dosya tipi desteklenmiyor ya da başka bir sorun olabilir. Lütfen daha sonra tekrar deneyin ya da bir yetkiliye başvurun.', {
-                    classname: 'bg-danger text-light'
-                });
-            }
-
-        }
-
-        if (this.imgInput) {
-            this.imgInput.nativeElement.value = '';
-        }
-        this._isLoading = false;
-    }
 
     public onDeleteSelectedImage(token: string): void {
         const idx = this._selectedImages.findIndex(f => f.token === token);
@@ -420,14 +311,6 @@ export class ProductFormComponent implements OnInit {
         }
     }
 
-    public onDeleteProductImage(id: number): void {
-        /*   const pImage = this._formModel?.entity.images.find(x => x.id == id);
-          if (pImage != null && this._formModel && this._formModel.entity) {
-              this._formModel.entity.images = this._formModel.entity.images.filter(x => x.id != id);
-              this._formModel.entity.productImages = this._formModel.entity.productImages.filter(x => x.imageId != id)
-              this._productForm.get('productImages')?.setValue(this._formModel.entity.productImages);
-          } */
-    }
 
     public addNewVideo(): void {
         this.newVideos.push({
@@ -443,46 +326,8 @@ export class ProductFormComponent implements OnInit {
         }
     }
 
-    public deleteProductVideo(linkUrl: string): void {
-        /*   const pImage = this._formModel?.entity.videos.find(x => x.linkUrl == linkUrl);
-          if (pImage != null && this._formModel && this._formModel.entity) {
-              this._formModel.entity.videos = this._formModel.entity.videos.filter(x => x.linkUrl != linkUrl);
-              this._productForm.get('videos')?.setValue(this._formModel.entity.videos);
-          } */
-    }
-
-    public companyTypeName(id: number): string {
-        const ct = this._customerTypes.find(c => c.id === id);
-        return ct && ct.name ? ct.name : '-';
-    }
 
 
-
-    public async updateProductPricesClick(): Promise<void> {
-        /*   if (!this._formModel?.entity.id) { return; }
-  
-          await this._productService.triggerUpdateProductPrices(this._formModel.entity.id);
-          // this._formModel = await this._productService.getInstance(this._formModel.entity.id);
-          this.initForm(); */
-    }
-
-
-
-
-    onCategorySelectionChange(event: Event, category: CategoryDto): void {
-        const inputElement = event.target as HTMLInputElement;
-        if (inputElement.checked) {
-            const categoryModel =
-                this.selectedCategories.push({
-                    categoryId: category.id ? category.id : 0,
-                });
-            const idx = this.selectedCategories.findIndex((x: any) => x.categoryId == category.id)
-            this.selectedCategories[idx].displayOrder = idx + 1
-        } else {
-            const index = this.selectedCategories.findIndex(c => c.categoryId === category.id);
-            this.selectedCategories.splice(index, 1);
-        }
-    }
 
     onGenderSelectionChange(event: Event, gender: GenderDto): void {
         const inputElement = event.target as HTMLInputElement;
@@ -585,11 +430,4 @@ export class ProductFormComponent implements OnInit {
         }
         return this.selectedProducts
     }
-    // public priceChanged(item: ProductPriceDto) {
-
-    //         item.price
-
-    //     console.log(item);
-    //     console.log(item.price.toFixed(6));
-    // }
 }

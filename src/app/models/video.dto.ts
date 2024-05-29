@@ -9,7 +9,6 @@ export interface VideoDto {
     companyId: number;
     company: CompanyDto;
     userId: number;
-    user: UserDto;
     productId: number;
 }
 

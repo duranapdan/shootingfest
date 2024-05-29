@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ConfirmStatus, SupportRequestStatus } from 'src/app/complex-types';
-import { ApprovalRequestParams } from 'src/app/modules/approval-request/services/approval-request.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -12,9 +11,7 @@ import { environment } from 'src/environments/environment';
 export class AsideMenuComponent implements OnInit {
   appAngularVersion: string = environment.appVersion;
 
-  public get currentApprovalRequestStatus(): ConfirmStatus {
-    return ApprovalRequestParams.Status;
-  }
+
 
   public get currentSupportRequestStatus(): SupportRequestStatus {
     var r = SupportRequestStatus.Open;
@@ -26,7 +23,7 @@ export class AsideMenuComponent implements OnInit {
     return r;
   }
 
-  constructor(private _route: ActivatedRoute) {}
+  constructor(private _route: ActivatedRoute) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 }

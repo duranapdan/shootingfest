@@ -2,9 +2,6 @@ import { ProductTopInfoIconType } from 'src/app/complex-types';
 import { DocumentDto } from 'src/app/models/document.dto';
 import { ImageDto } from 'src/app/models/image.dto';
 import { VideoDto } from 'src/app/models/video.dto';
-import { BrandDto } from '../../brand/models/brand.dto';
-import { ProductFlagDto } from '../../product-flag/models/product-flag.dto';
-import { ProductTagDto } from '../../product-tag/models/product-tag.dto';
 import { ProductTypeDto } from './product-type.dto';
 
 export interface ProductDto {
@@ -31,9 +28,7 @@ export interface ProductDto {
   productFlagId: number;
   coolerType: string;
   coolerSubType: string;
-  productFlag: ProductFlagDto;
   brandId: number;
-  brand: BrandDto;
   deliveryStartDate: Date;
   shipmentDate: Date;
   itemVatGroup: string;
@@ -42,7 +37,6 @@ export interface ProductDto {
   itemCategoryCode: string;
   mainImageId: number;
   mainImage: ImageDto;
-  tags: Array<ProductTagDto>;
   videos: Array<VideoDto>;
   productPrice: ProductPriceDto;
   productImages: Array<ProductImageDto>;
@@ -77,7 +71,6 @@ export interface ProductCategoryDto {
 export interface ProductProductFlagDto {
   id: number;
   productFlagId: number;
-  productFlag: ProductFlagDto;
   productId: number;
   displayOrder: number;
 }

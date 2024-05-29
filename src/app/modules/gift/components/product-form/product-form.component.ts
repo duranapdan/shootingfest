@@ -1,14 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { AbstractControl, FormControl, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BrandDto } from 'src/app/modules/brand/models/brand.dto';
-import { BrandService } from 'src/app/modules/brand/services/brand.sevice';
-import { CategoryDto } from 'src/app/modules/category/models/category.dto';
-import { CategoryService } from 'src/app/modules/category/services/category.service';
-import { CompanyTypeDto } from 'src/app/modules/customer/models/company-type.dto';
-import { CustomerService } from 'src/app/modules/customer/services/customer.service';
-import { ProductFlagDto } from 'src/app/modules/product-flag/models/product-flag.dto';
-import { ProductFlagService } from 'src/app/modules/product-flag/services/product-flag.service';
 import { ApiUrlPipe } from 'src/app/pipes/api-url.pipe';
 import { TranslationEntryDto } from 'src/app/shared/models/translation-entry.dto';
 import { FileService } from 'src/app/shared/services/file.service';
@@ -22,7 +14,6 @@ import { GenderDto } from '../../models/gender.dto';
 import { ManagementProductListParams } from '../../models/management-product-list.model';
 import { GiftDto } from '../../models/gift.dto';
 import { AppService } from 'src/app/app.service';
-import { CreateGiftDto } from '../../models/CreateGiftDto.dto';
 
 @Component({
     selector: 'app-product-form',
@@ -30,10 +21,6 @@ import { CreateGiftDto } from '../../models/CreateGiftDto.dto';
     styleUrls: ['./product-form.component.scss'],
     providers: [
         ApiUrlPipe,
-        BrandService,
-        CategoryService,
-        ProductFlagService,
-        CustomerService
     ]
 })
 export class ProductFormComponent implements OnInit {
@@ -45,7 +32,7 @@ export class ProductFormComponent implements OnInit {
     selectedCategory: any = null
     private _isLoading: boolean = false;
     public get isLoading(): boolean {
-        return this._giftService.isLoading || this._brandService.isLoading || this._categoryService.isLoading || this._isLoading;
+        return this._giftService.isLoading || this._isLoading;
     }
 
     private _categoryImage: string | undefined = undefined;
@@ -126,15 +113,6 @@ export class ProductFormComponent implements OnInit {
         return this._formModel;
     }
 
-    private _brands: PagedList<BrandDto> = { page: 0, count: 0 };
-    public get brands(): PagedList<BrandDto> {
-        return this._brands;
-    }
-
-    /* private _categories: PagedList<CategoryDto> = { count: 0 };
-    public get categories(): PagedList<CategoryDto> {
-        return this._categories;
-    } */
 
     private _genders: Array<GenderDto> = [
         { id: 1, name: "Male" },
@@ -144,10 +122,6 @@ export class ProductFormComponent implements OnInit {
         return this._genders;
     }
 
-    private _productFlags: Array<ProductFlagDto> = [];
-    public get productFlags(): Array<ProductFlagDto> {
-        return this._productFlags;
-    }
     private _productTypes: PagedList<ProductTypeDto> = { page: 0, count: 0 };
     public get productTypes(): PagedList<ProductTypeDto> {
         return this._productTypes;
@@ -189,21 +163,14 @@ export class ProductFormComponent implements OnInit {
 
     }
 
-
-    private _customerTypes: Array<CompanyTypeDto> = [];
-
     constructor(
         private _router: Router,
         private _route: ActivatedRoute,
         private _formBuilder: UntypedFormBuilder,
         private _giftService: ProductService,
-        private _brandService: BrandService,
-        private _categoryService: CategoryService,
-        private _productFlagService: ProductFlagService,
         private _fileService: FileService,
         private _toastService: ToastService,
         private _apiUrlPipe: ApiUrlPipe,
-        private _customerServices: CustomerService,
         private _appService: AppService
 
     ) { }
@@ -355,22 +322,6 @@ export class ProductFormComponent implements OnInit {
         const idx = this.newVideos.findIndex((v: any) => v.linkUrl !== url)
         if (idx > -1) {
             this.newVideos.splice(idx, 1);
-        }
-    }
-
-
-    onCategorySelectionChange(event: Event, category: CategoryDto): void {
-        const inputElement = event.target as HTMLInputElement;
-        if (inputElement.checked) {
-            const categoryModel =
-                this.selectedCategories.push({
-                    categoryId: category.id ? category.id : 0,
-                });
-            const idx = this.selectedCategories.findIndex((x: any) => x.categoryId == category.id)
-            this.selectedCategories[idx].displayOrder = idx + 1
-        } else {
-            const index = this.selectedCategories.findIndex(c => c.categoryId === category.id);
-            this.selectedCategories.splice(index, 1);
         }
     }
 

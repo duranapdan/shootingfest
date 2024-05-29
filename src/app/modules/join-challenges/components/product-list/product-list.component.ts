@@ -1,13 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { PagedList } from 'src/app/models/api-paged-data-result.model';
-import { CategoryDto } from 'src/app/modules/category/models/category.dto';
-import { CategoryService } from 'src/app/modules/category/services/category.service';
 import { ConfirmationService } from 'src/app/shared/services/confirmation.service';
 import { SubSink } from 'subsink';
 import { ManagementProductListParams } from '../../models/management-product-list.model';
-import { ProductForListDto } from '../../models/product-for-list.dto';
 import { ProductService } from '../../services/product.service';
-import { DynamicFilter, DynamicFilterBase, Filter } from '../../models/dynamic-filter.model';
+import { DynamicFilterBase } from '../../models/dynamic-filter.model';
 import { Router } from '@angular/router';
 import { ToolbarService } from 'src/app/layout/core/toolbar.service';
 import { JoinChallengesDto } from '../../models/join-challenge-detail.dto';
@@ -16,7 +13,6 @@ import { JoinChallengesDto } from '../../models/join-challenge-detail.dto';
     selector: 'app-product-list',
     templateUrl: './product-list.component.html',
     styleUrls: ['./product-list.component.scss'],
-    providers: [CategoryService]
 })
 export class ProductListComponent implements OnInit, OnDestroy {
     public get isLoading(): boolean {
@@ -40,10 +36,6 @@ export class ProductListComponent implements OnInit, OnDestroy {
         return this._productFilter
     }
 
-    private _categories: PagedList<CategoryDto> = { page: 0, count: 0 };
-    public get categories(): PagedList<CategoryDto> {
-        return this._categories;
-    }
 
     public isSortedByName: boolean = false;
     public isSortedByBrand: boolean = false;
@@ -56,7 +48,6 @@ export class ProductListComponent implements OnInit, OnDestroy {
     companyTypeList: any = [];
 
     constructor(
-        private _categoryService: CategoryService,
         private _router: Router,
         private _productService: ProductService,
         private _confirmationService: ConfirmationService,

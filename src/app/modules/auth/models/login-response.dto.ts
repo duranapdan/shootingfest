@@ -1,4 +1,3 @@
-import { UserDto } from "./user.dto";
 
 export interface TokenInfo {
   token: string;

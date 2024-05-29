@@ -5,17 +5,9 @@ import { AppService } from "src/app/app.service";
 import { IDataResult } from "src/app/models/api-data-result.model";
 import { PagedList } from "src/app/models/api-paged-data-result.model";
 import { IResult } from "src/app/models/api-result.model";
-import { MultilanguageEntityDto } from "src/app/shared/models/multilanguage-entity.dto";
-import { environment } from "src/environments/environment";
-import { ManagementProductListParams } from "../models/management-product-list.model";
 import { ProductDetailDto } from "../models/product-detail.dto";
 import { ProductForListDto } from "../models/product-for-list.dto";
-import { ProductUpsertDto } from "../models/product-upsert.dto";
-import { ProductDto } from "../models/product.dto";
-import { PaginationParams } from "src/app/models/pagination-params.model";
-import { DynamicFilterBase } from "../models/dynamic-filter.model";
 import { ProductTypeDto } from "../models/product-type.dto";
-import { MultilanguageEntityRequestDto } from "src/app/shared/models/multilanguage-entity-request.dto copy";
 
 @Injectable()
 export class ProductService {

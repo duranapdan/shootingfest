@@ -11,7 +11,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ProductCompanyTypeComponent } from './components/product-company-type/product-company-type.component';
 import { InlineSVGModule } from 'ng-inline-svg-2';
-import { CategoryComponent } from '../category/components/category/category.component';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatExpansionModule } from '@angular/material/expansion';
 

@@ -9,7 +9,6 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { LayoutComponent } from './layout.component';
-import { ExtrasModule } from '../partials/layout/extras/extras.module';
 import { Routing } from '../pages/routing';
 import { AsideComponent } from './components/aside/aside.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -51,7 +50,6 @@ const routes: Routes = [
     InlineSVGModule,
     NgbDropdownModule,
     NgbProgressbarModule,
-    ExtrasModule,
     ModalsModule,
     DrawersModule,
     DropdownMenusModule,
