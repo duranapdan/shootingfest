@@ -36,7 +36,7 @@ export function appInitializer(appService: AppService, authService: AuthService)
     AppRoutingModule,
     InlineSVGModule.forRoot(),
     NgbModule,
-    FormsModule
+    FormsModule,
   ],
   providers: [
     {

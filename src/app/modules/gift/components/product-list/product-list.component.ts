@@ -87,17 +87,17 @@ export class ProductListComponent implements OnInit, OnDestroy {
     }
 
     public async getProducts(): Promise<void> {
-        if (sessionStorage.getItem("productPageParams")) {
-            const data: any = sessionStorage.getItem('productPageParams');
-            const historyFilter: any = sessionStorage.getItem('productPageFilter');
+        if (sessionStorage.getItem("giftPageParams")) {
+            const data: any = sessionStorage.getItem('giftPageParams');
+            const historyFilter: any = sessionStorage.getItem('giftPageFilter');
             this._params = JSON.parse(data)
             this._productFilter = JSON.parse(historyFilter)
         }
         this._giftsModel = await this._productService.getList(this._params);
         this.waitForSycn = false
         console.log(this._params.Page)
-        sessionStorage.removeItem("productPageParams")
-        sessionStorage.removeItem("productPageFilter")
+        sessionStorage.removeItem("giftPageParams")
+        sessionStorage.removeItem("giftPageFilter")
 
     }
 
@@ -192,8 +192,8 @@ export class ProductListComponent implements OnInit, OnDestroy {
     }
 
     setPageHistory(gift: GiftDto) {
-        sessionStorage.setItem("productPageParams", JSON.stringify(this._params))
-        sessionStorage.setItem("productPageFilter", JSON.stringify(this._productFilter))
+        sessionStorage.setItem("giftPageParams", JSON.stringify(this._params))
+        sessionStorage.setItem("giftPageFilter", JSON.stringify(this._productFilter))
         sessionStorage.setItem("gift", JSON.stringify(gift))
 
     }

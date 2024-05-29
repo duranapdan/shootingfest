@@ -20,13 +20,21 @@
         <div
           class="image-input image-input-empty image-input-outline mb-3"
           data-kt-image-input="true"
-          [style.backgroundSize]="'contain'"
-          [style.backgroundPosition]="'center'"
-          [style.backgroundImage]="
-            'url(' + giftForm.controls['giftImageUrl'].value + ')'
-          "
         >
-          <div class="image-input-wrapper w-150px h-150px"></div>
+          <div
+            *ngIf="giftForm.controls['giftImageUrl'].value"
+            class="image-input-wrapper w-150px h-150px d-flex align-items-center"
+          >
+            <img
+              class="w-100"
+              [src]="
+                baseImg != ''
+                  ? baseImg
+                  : baseUrl + giftForm.controls['giftImageUrl'].value
+              "
+              alt="Gift Image"
+            />
+          </div>
           <label
             class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
             data-kt-image-input-action="change"

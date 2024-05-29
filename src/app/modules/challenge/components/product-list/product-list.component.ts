@@ -84,17 +84,18 @@ export class ProductListComponent implements OnInit, OnDestroy {
     }
 
     public async getProducts(): Promise<void> {
-        if (sessionStorage.getItem("productPageParams")) {
-            const data: any = sessionStorage.getItem('productPageParams');
-            const historyFilter: any = sessionStorage.getItem('productPageFilter');
+        if (sessionStorage.getItem("challengePageParams")) {
+            const data: any = sessionStorage.getItem('challengePageParams');
+            const historyFilter: any = sessionStorage.getItem('challengePageFilter');
             this._params = JSON.parse(data)
             this._productFilter = JSON.parse(historyFilter)
         }
+        console.log('  this._params :>> ', this._params);
         this._productsModel = await this._productService.getList(this._params);
         this.waitForSycn = false
         console.log(this._params.Page)
-        sessionStorage.removeItem("productPageParams")
-        sessionStorage.removeItem("productPageFilter")
+        sessionStorage.removeItem("challengePageParams")
+        sessionStorage.removeItem("challengePageFilter")
 
     }
 
@@ -189,7 +190,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
     }
 
     setPageHistory() {
-        sessionStorage.setItem("productPageParams", JSON.stringify(this._params))
-        sessionStorage.setItem("productPageFilter", JSON.stringify(this._productFilter))
+        sessionStorage.setItem("challengePageParams", JSON.stringify(this._params))
+        sessionStorage.setItem("challengePageFilter", JSON.stringify(this._productFilter))
     }
 }

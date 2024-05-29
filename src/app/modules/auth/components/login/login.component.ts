@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
     private fb: UntypedFormBuilder,
     private authService: AuthService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
   ) {
     // redirect to home if already logged in
     /* if (this.authService.currentUser) {

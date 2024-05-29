@@ -8,7 +8,7 @@ export const environment = {
   USERDATA_KEY: 'authf649fc9a5f55',
   isMockEnabled: false,
   appThemeName: 'Metronic',
-  appPreviewDocsUrl: 'https://preview.keenthemes.com/metronic8/angular/docs'
+  appPreviewDocsUrl: 'https://preview.keenthemes.com/metronic8/angular/docs',
 };
 
 /*

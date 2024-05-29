@@ -123,9 +123,11 @@ export class ProductService {
 
     public async upsert(model: GiftDto): Promise<void> {
         try {
+            console.log('model :>> ', model);
 
             this._isLoading = true;
             let createModal = {
+                id: model.id,
                 file: model.file,
                 giftDescription: model.giftDescription,
                 giftName: model.giftName,
@@ -137,7 +139,7 @@ export class ProductService {
             formData.append('file', model.file);
 
             const res = model.id
-                ? await firstValueFrom(this._httpClient.put<IDataResult<GiftDto>>(`${this._appService.apiUrl2}/Gifts`, model))
+                ? await firstValueFrom(this._httpClient.put<IDataResult<GiftDto>>(`${this._appService.apiUrl2}/Gifts?id=${createModal.id}&giftName=${createModal.giftName}&giftDescription=${createModal.giftDescription}&points=${createModal.points}`, formData))
                 : await firstValueFrom(this._httpClient.post<IDataResult<GiftDto>>(`${this._appService.apiUrl2}/Gifts/CreateGift?giftName=${createModal.giftName}&giftDescription=${createModal.giftDescription}&points=${createModal.points}`, formData));
             // const res = await firstValueFrom(this._httpClient.put<IDataResult<MultilanguageEntityRequestDto<ProductUpsertDto>>>(`${this._appService.apiUrl2}/Products`, model));
             if (!res.isSuccess) {

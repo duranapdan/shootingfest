@@ -163,12 +163,10 @@ export class ProductFormComponent implements OnInit {
     newVideos: Array<{ linkUrl: string, name: string }> = [];
 
     productPrice: ProductPriceDto = {
-
         unitPrice: 0,
         currency: "₺",
         discountedPrice: 0,
         status: 1,
-
     }
 
 

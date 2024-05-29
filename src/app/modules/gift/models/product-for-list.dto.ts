@@ -19,4 +19,5 @@ export interface ProductForListDto {
     modifiedDate: string;
     isDeleted: boolean;
     deletedDate: null | string;
+    baseUrl: string;
 }

@@ -12,5 +12,6 @@ export interface GiftDto {
     isDeleted: boolean;
     deletedDate: null | string;
     file: Blob;
-    fileName: string
+    fileName: string;
+    baseUrl: string;
 }

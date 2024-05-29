@@ -38,6 +38,9 @@ import { CreateGiftDto } from '../../models/CreateGiftDto.dto';
 })
 export class ProductFormComponent implements OnInit {
     giftId: string | null = "";
+    baseUrl: string = this._appService.baseUrl
+    baseImg: string = ''; // assuming baseImg is defined in your component
+
     selectedCategoryName: string = ""
     selectedCategory: any = null
     private _isLoading: boolean = false;
@@ -84,13 +87,12 @@ export class ProductFormComponent implements OnInit {
         deletedDate: [],
         file: Blob,
         tokens: [''],
-        fileName: ['']
+        fileName: [''],
     });
 
     public get giftForm(): UntypedFormGroup {
         return this._giftForm;
     }
-
 
     private _subsink = new SubSink();
 
@@ -211,6 +213,7 @@ export class ProductFormComponent implements OnInit {
             this.giftId = p.get('id');
             if (this.giftId !== "" && this.giftId != null) {
                 const result = await this._giftService.getInstance(this.giftId);
+                console.log('result :>> ', result);
                 this._formModel = result;
                 this.initForm();
             }
@@ -226,7 +229,8 @@ export class ProductFormComponent implements OnInit {
         this._giftForm.get('id')?.setValue(this.giftId);
         this._giftForm.get('giftName')?.setValue(this._formModel.giftName);
         this._giftForm.get('giftDescription')?.setValue(this._formModel.giftDescription);
-        this._giftForm.get('giftImageUrl')?.setValue(this._appService.baseUrl + this._formModel.giftImageUrl);
+        this._giftForm.get('giftImageUrl')?.setValue(this._formModel.giftImageUrl);
+        this._giftForm.get('baseUrl')?.setValue(this._appService.baseUrl);
         this._giftForm.get('points')?.setValue(this._formModel.points);
         this._giftForm.get('status')?.setValue(this._formModel.status);
         this._giftForm.get('createdBy')?.setValue(this._formModel.createdBy);
@@ -254,16 +258,22 @@ export class ProductFormComponent implements OnInit {
 
     public async onThumbChange(e: any): Promise<void> {
         const input = e.target as HTMLInputElement;
-
         if (!e.target.files[0]) { return; }
         const selectedFile = e.target.files[0];
+        console.log('selectedFile :>> :>> ', selectedFile);
+        console.log('input :>> ', input);
+        console.log('e.target :>> ', e.target);
+        console.log('selectedFile.name :>> ', selectedFile.name);
         this._giftForm.get('fileName')?.setValue(selectedFile.name);
         this._giftForm.get('file')?.setValue(e.target.files[0]);
         if (input.files && input.files[0]) {
             const reader = new FileReader();
             reader.onload = (e: any) => {
-                this.giftForm.controls['giftImageUrl'].setValue(e.target.result);
+                //  this.giftForm.controls['baseImg'].setValue(e.target.result);
+                this.baseImg = e.target.result;
+                console.log('     this.baseImg  :>> ', this.baseImg);
             };
+            console.log('input.files[0] :>> ', input.files[0]);
             reader.readAsDataURL(input.files[0]);
         }
     }
