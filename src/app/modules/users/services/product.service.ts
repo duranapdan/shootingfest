@@ -142,7 +142,7 @@ export class ProductService {
     public async delete(userId: string): Promise<void> {
         try {
             this._isLoading = true;
-            const res = await firstValueFrom(this._httpClient.delete<IResult>(`${this._appService.apiUrl2}/Users`, { body: { id: userId } }));
+            const res = await firstValueFrom(this._httpClient.delete<IResult>(`${this._appService.apiUrl2}/Users/DeleteAccount`, { body: { id: userId } }));
             if (!res.isSuccess) {
                 this._isLoading = false;
                 throw res.errorMessages.concat(res.validatonErrorMessages);
