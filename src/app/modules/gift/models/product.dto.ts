@@ -1,6 +1,5 @@
 import { ProductTopInfoIconType } from 'src/app/complex-types';
 import { ImageDto } from 'src/app/models/image.dto';
-import { VideoDto } from 'src/app/models/video.dto';
 import { ProductTypeDto } from './product-type.dto';
 
 export interface ProductDto {
@@ -36,7 +35,6 @@ export interface ProductDto {
   itemCategoryCode: string;
   mainImageId: number;
   mainImage: ImageDto;
-  videos: Array<VideoDto>;
   productPrice: ProductPriceDto;
   productImages: Array<ProductImageDto>;
   images: Array<ImageDto>;
