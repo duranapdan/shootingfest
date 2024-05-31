@@ -14,6 +14,7 @@
     "@angular/common": "^14.2.3",
     "@angular/compiler": "^14.2.3",
     "@angular/core": "^14.2.3",
+    "@angular/fire": "^7.6.1",
     "@angular/forms": "^14.2.3",
     "@angular/google-maps": "^14.2.2",
     "@angular/localize": "^15.2.8",
@@ -54,7 +55,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^14.2.3",
-    "@angular/cli": "^14.2.3",
+    "@angular/cli": "^17.3.8",
     "@angular/compiler-cli": "^14.2.3",
     "@types/jasmine": "~3.10.0",
     "@types/node": "^12.11.1",

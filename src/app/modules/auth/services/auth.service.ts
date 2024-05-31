@@ -16,13 +16,13 @@ export class AuthService {
     private router: Router
   ) { }
 
-  async login(email: string, password: string): Promise<LoginResponseDto> {
-    const res = await this.authHttpService.login(email, password);
+  async login(email: string, password: string, fcmToken: string | null): Promise<LoginResponseDto> {
+    const res = await this.authHttpService.login(email, password, fcmToken);
     localStorage.setItem(this.authLocalStorageToken, JSON.stringify(res));
     return res;
   }
-  async loginAdmin(email: string, password: string): Promise<LoginResponseDto> {
-    const res = await this.authHttpService.loginAdmin(email, password);
+  async loginAdmin(email: string, password: string, fcmToken: string): Promise<LoginResponseDto> {
+    const res = await this.authHttpService.loginAdmin(email, password, fcmToken);
     localStorage.setItem(this.authLocalStorageToken, JSON.stringify(res));
     return res;
   }

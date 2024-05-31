@@ -40,7 +40,7 @@ export class ProductService {
         try {
             this._isLoading = true;
             let res: any
-            res = await firstValueFrom(this._httpClient.get<IDataResult<PagedList<ProductForListDto>>>(`${this._appService.apiUrl2}/Faqs/GetList?Page=${params.Page}&PageSize=${params.Count}`, filter));
+            res = await firstValueFrom(this._httpClient.get<IDataResult<PagedList<ProductForListDto>>>(`${this._appService.apiUrl2}/Faqs/GetList?PageIndex=${params.Page}&PageSize=${params.Count}`, filter));
             if (!res.isSuccess) {
                 this._isLoading = false;
                 throw res.errorMessages.concat(res.validatonErrorMessages);

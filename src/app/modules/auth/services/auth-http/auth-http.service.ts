@@ -12,17 +12,18 @@ export class AuthHTTPService {
 
   constructor(private _httpClient: HttpClient, private _appService: AppService) { }
 
-  async login(email: string, password: string): Promise<LoginResponseDto> {
+  async login(email: string, password: string, fcmToken: string | null): Promise<LoginResponseDto> {
     const res = await firstValueFrom(this._httpClient.post<LoginResponseDto>(`${this._appService.apiUrl2}/Auth/Login`, {
       email,
       password,
-      authenticatorCode: null
+      authenticatorCode: null,
+      fcmToken
     }));
 
     return res;
   }
 
-  async loginAdmin(email: string, password: string): Promise<LoginResponseDto> {
+  async loginAdmin(email: string, password: string, fcmToken: string): Promise<LoginResponseDto> {
     const res = await firstValueFrom(this._httpClient.post<IDataResult<LoginResponseDto>>(`${this._appService.apiUrl}/user/LoginAdmin`, {
       email,
       password,

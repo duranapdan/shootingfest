@@ -3,6 +3,7 @@ import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoginDto } from '../../models/login.dto';
+import { TokenService } from 'src/app/shared/services/token.service';
 
 @Component({
   selector: 'app-login',
@@ -14,6 +15,7 @@ export class LoginComponent implements OnInit {
     email: '',
     password: '',
   };
+  token: string | null = "";
 
   public loginForm = this.fb.group({
     email: [
@@ -44,6 +46,7 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router,
+    private tokenService: TokenService
   ) {
     // redirect to home if already logged in
     /* if (this.authService.currentUser) {
@@ -66,7 +69,9 @@ export class LoginComponent implements OnInit {
     this.hasError = false;
     this.isLoading = true;
     try {
-      await this.authService.login(this.f['email'].value, this.f['password'].value);
+      this.token = this.tokenService.getToken(); // Token'ı alın
+
+      await this.authService.login(this.f['email'].value, this.f['password'].value, this.token);
     } catch (error) {
       console.log('error :>> ', error);
       this.isLoading = false;

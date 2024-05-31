@@ -14,6 +14,10 @@ import { AppService } from './app.service';
 import { AuthService } from './modules/auth';
 import { LangInterceptor } from './modules/auth/interceptors/lang.interceptor';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { getMessaging, provideMessaging } from '@angular/fire/messaging';
+import { getAuth, provideAuth } from '@angular/fire/auth';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { environment } from 'src/environments/environment';
 
 export function appInitializer(appService: AppService, authService: AuthService) {
   return async () => {
@@ -37,6 +41,9 @@ export function appInitializer(appService: AppService, authService: AuthService)
     InlineSVGModule.forRoot(),
     NgbModule,
     FormsModule,
+    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+    provideAuth(() => getAuth()),
+    provideMessaging(() => getMessaging()),
   ],
   providers: [
     {
